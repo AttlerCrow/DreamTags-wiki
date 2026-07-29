@@ -1,0 +1,7 @@
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+# Running `vitepress` without the docs argument drops a cache here.
+/.vitepress/
+*.log
+.DS_Store
