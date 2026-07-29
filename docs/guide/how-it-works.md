@@ -1,134 +1,115 @@
 # How it works
 
-Four ideas explain almost everything in DreamTags. Once they click, the YAML
-reads itself.
+## Tags are packets
 
-## 1. Nothing is really there
+A tag is a text display sent as packets to the players who should see it. No
+entity is spawned and nothing is saved to the chunk, so `/kill @e` cannot touch
+it and no other plugin can clear it.
 
-A tag is a **text display sent as packets** to the players who should see it. No
-entity is spawned, nothing is saved to the chunk, and `/kill @e` cannot touch it.
+Because packets are per-player, two players can be shown different things — that
+is how per-player damage numbers and hidden nametags work.
 
-The practical consequences:
+Tags follow their entity by riding it as a passenger. The client moves them every
+frame, so the server sends no position packets.
 
-- Tags cannot be destroyed by other plugins, world resets or entity clearing.
-- Two players can be shown different things at the same time, which is what
-  makes per-player damage numbers and hidden nametags possible.
-- Tags follow their entity by **riding it as a passenger**, so the client moves
-  them every frame and the server sends no position packets at all.
+## Bars are images
 
-## 2. A bar is an image, not a string of characters
-
-Most nametag plugins draw bars with characters (`■■■□□`). DreamTags slices a PNG
-into frames instead, so a bar is a real texture that can be any shape.
+A bar is a PNG cut into frames, not a row of `■` characters.
 
 ```
 default_healthbar_fill.png   77 x 6 px
         ↓  type: progress, anchor: left, frames: 77
-frame 0  (empty)  ...  frame 38 (half)  ...  frame 77 (full)
+frame 0 (empty)  ...  frame 38 (half)  ...  frame 77 (full)
 ```
 
-Pick the frame to show and you have a bar. That is all a "health bar" is.
+Showing the right frame is all a health bar does.
 
-## 3. The image says *how it is cut*, the layout says *what drives it*
+## The image says how it is cut, the layout says what fills it
 
-::: tip The single most common confusion
-`type:` in `images/*.yml` describes **how the frames are produced from the PNG**.
-It does **not** say where the value comes from.
-
-What fills the bar is `listener:` on the slot in the **layout**.
-:::
-
-That separation is why the same image can be a health bar in one layout and a
-mana bar in another:
+`type:` in `images/*.yml` only describes how frames are produced from the PNG.
+The value comes from `listener:` on the slot in the layout.
 
 ```yaml
-# images/*.yml — how to cut it
+# images/*.yml
 health_fill:
   file: default_healthbar_fill.png
-  type: progress      # slice into frames
-  anchor: left        # the left edge stays put; it drains from the right
+  type: progress      # cut into frames
+  anchor: left        # left edge stays put, drains from the right
   frames: 77
 ```
 
 ```yaml
-# layouts/*.yml — what fills it
+# layouts/*.yml
 health_bar:
   image: health_fill
-  listener: health    # ← the value source
+  listener: health
 
 mana_bar:
-  image: health_fill  # same texture
-  listener: mana      # different value
+  image: health_fill   # same texture
+  listener: mana       # different value
 ```
 
-The one exception is `type: frame-sequence`, a time-based animation that plays
-on its own clock and ignores `listener:` entirely.
+One exception: `type: frame-sequence` animates on a clock and ignores
+`listener:`.
 
-## 4. Ids are global, and content is assembled in layers
+## Ids are global
 
-Everything you define gets an **id**, and ids are shared across every pack — not
-scoped to the pack that declared them. That is what lets packs build on each
-other.
+Everything you define gets an id, and ids are shared across all packs. That is
+how a pack builds on another one — `soulmates_pack` defines its own images but
+uses `font: pixel` and `background: name_plate` from `default`.
 
 ```
-assets/*.png          raw textures
+assets/*.png          textures
     ↓
-images/*.yml          PNG → frames               id: health_fill
-fonts/*.yml           PNG grid → a font          id: pixel
-backgrounds/*.yml     PNG pieces → a plate       id: name_plate
+images/*.yml          PNG → frames         id: health_fill
+fonts/*.yml           PNG grid → font      id: pixel
+backgrounds/*.yml     PNG pieces → plate   id: name_plate
     ↓
-layouts/*.yml         arrange them into a design id: player_layout
+layouts/*.yml         the design           id: player_layout
     ↓
-tags/*.yml            who wears it, and when     id: my_nametag
+tags/*.yml            who wears it         id: my_nametag
 ```
 
-The `soulmates_pack` that ships with the plugin is the proof: it defines its own
-images, but its layout uses `font: pixel` and `background: name_plate` from the
-`default` pack.
+## Layers
 
-## Layers and stacking
+Each slot has a `layer:`. Higher draws in front. The health bar in
+`default_layout` is five slots:
 
-Inside a layout, each slot has a `layer:`. Higher numbers draw in front. The
-health bar in `default_layout` is five slots on five layers:
-
-| layer | slot | what it is |
+| layer | slot | what |
 | --- | --- | --- |
-| 1 | `health_frame` | the border, marked `background: true` |
-| 2 | `health_trail_damage` | the red ghost bar left behind by a hit |
-| 3 | `health_heal_incoming` | the green heal preview |
-| 4 | `health_fill_*` | the live bar — three variants gated by health |
-| 6 | `active_buffs` | the potion effect row |
-| 10 | `title` | the name, on its plate |
+| 1 | `health_frame` | border, marked `background: true` |
+| 2 | `health_trail_damage` | red ghost bar left by a hit |
+| 3 | `health_heal_incoming` | green heal preview |
+| 4 | `health_fill_*` | the live bar, three colour variants |
+| 6 | `active_buffs` | potion effect row |
+| 10 | `title` | name on its plate |
 
-Layers 4 shows one of three images depending on how hurt the entity is, using
-[conditions](/layouts/conditions):
+Layer 4 holds three slots with conditions that cannot overlap, so exactly one
+shows:
 
 ```yaml
 health_fill_normal:
-  condition: "{health_percentage} > 0.5"      # green
+  condition: "{health_percentage} > 0.5"
 health_fill_mid:
   condition:
-    - "{health_percentage} <= 0.5"            # yellow
+    - "{health_percentage} <= 0.5"
     - "{health_percentage} > 0.2"
 health_fill_low:
-  condition: "{health_percentage} <= 0.2"     # red
+  condition: "{health_percentage} <= 0.2"
 ```
 
 ## Rendering cost
 
-Two details worth knowing before you design something heavy:
+A nametag's content depends on the entity wearing it, not on who is looking. When
+DreamTags can prove that at load time, it renders the tag once and sends the same
+packets to everyone.
 
-- **A nametag's content belongs to the entity wearing it**, not to the viewer.
-  When DreamTags can prove that at load time, it renders the tag once and sends
-  the same packets to everyone — instead of rebuilding it for every observer.
-- **PlaceholderAPI expressions break that.** A `%papi%` placeholder can read the
-  viewer, so any layout using one falls back to rendering per viewer. Prefer the
-  [built-in placeholders](/placeholders/built-in) when an equivalent exists.
-
-The startup log tells you when a tag ended up on the slower path, and why.
+`%papi%` placeholders can read the viewer, so a layout using one is rendered
+separately for each viewer instead. Use a [built-in](/placeholders/built-in) when
+one exists. The startup log names any tag that ended up on the slower path.
 
 ## Next
 
-- [Images](/images) — the four `type` values in detail
-- [Layouts](/layouts/) — every section and key
-- [Tags](/tags) — selectors, triggers and priority
+- [Images](/images)
+- [Layouts](/layouts/)
+- [Tags](/tags)

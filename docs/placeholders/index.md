@@ -1,6 +1,6 @@
 # Placeholders
 
-Placeholders are the values you drop into text, conditions and listeners.
+Values you drop into text, conditions and listeners.
 
 ```yaml
 pattern: "<red>{health}</red> / <gray>{max_health}</gray>"
@@ -11,12 +11,9 @@ listener:
   max: "{max_mana}"
 ```
 
-Three kinds of source:
-
-- [Built-in](/placeholders/built-in) — health, mana, level, name, effects
-- [From other plugins](/placeholders/hooks) — MythicMobs, MMOCore, PlaceholderAPI…
-- **Popup variables** — `{damage}`, `{heal}`, `{buff_name}`, only inside the
-  popup that provides them
+Three sources: [built-in](/placeholders/built-in),
+[from other plugins](/placeholders/hooks), and popup variables like `{damage}`
+and `{buff_name}` that only exist inside the popup providing them.
 
 ## Syntax
 
@@ -25,42 +22,32 @@ Three kinds of source:
 | `{id}` | A DreamTags placeholder |
 | `{id:arg}` | With an argument. Several: `{id:a:b}` |
 | `%expr%` | A PlaceholderAPI expression |
-| `{papi:expr}` | The same thing, written the other way |
+| `{papi:expr}` | The same thing |
 
-In `condition:` and in a listener's `value:` / `max:`, the braces are optional —
-`health` and `{health}` are both accepted.
+In `condition:` and in a listener's `value:` / `max:`, braces are optional —
+`health` and `{health}` both work.
 
-::: tip A typo shows up on screen
-An unrecognised placeholder is rendered **literally**. If you see `{helth}`
-floating over a mob, that is your answer. Nothing is logged, because DreamTags
-cannot tell a typo from a variable another plugin might provide.
-:::
+An unrecognised placeholder is printed literally. Seeing `{helth}` over a mob is
+how you find the typo; nothing is logged, because DreamTags cannot tell a typo
+from a variable another plugin might provide.
 
 ### Arguments are counted exactly
 
-A placeholder that takes one argument must be given exactly one:
-
 | Written | Result |
 | --- | --- |
-| `{has_potion_effect:speed}` | ✅ works |
-| `{has_potion_effect}` | ❌ prints literally — no argument |
-| `{health:something}` | ❌ prints literally — `health` takes none |
+| `{has_potion_effect:speed}` | works |
+| `{has_potion_effect}` | prints literally — no argument |
+| `{health:something}` | prints literally — takes none |
 
-### Percent signs in text
+### Percent signs
 
-`%…%` is only treated as PlaceholderAPI when the content has no spaces, no
-`%`, no `{` and no `}`. So ordinary text survives untouched:
-
-```yaml
-pattern: "50% health"     # stays as written
-pattern: "% off"          # stays as written
-```
+`%…%` is only treated as PlaceholderAPI when the content has no spaces, no `%`,
+no `{` and no `}`. So `"50% health"` and `"% off"` stay as written.
 
 ## Number formatting
 
 Numeric placeholders print whole numbers as-is and everything else with one
-decimal. Change that per text slot with `number-format`, a
-`java.text.DecimalFormat` pattern:
+decimal. Override per text slot with a `java.text.DecimalFormat` pattern:
 
 ```yaml
 texts:
@@ -73,43 +60,39 @@ texts:
     number-format: "0.00"     # 0.73
 ```
 
-Two things worth knowing:
+Formatting always uses a neutral locale, so `1.5` never becomes `1,5` — which
+matters because [conditions](/layouts/conditions) compare this output. An
+invalid pattern fails when the pack loads, not at render time.
 
-- Formatting always uses a **neutral locale**, so `1.5` never becomes `1,5`.
-  That matters because [conditions](/layouts/conditions) compare this output.
-- An invalid pattern fails **when the pack loads**, not silently at render time.
+`number-format` only affects numbers. Strings and booleans pass through.
 
-`number-format` only affects numeric values. Strings and booleans pass through
-untouched.
-
-## Where each type can be used
+## Where each type works
 
 | Type | Text | Conditions | Listeners |
 | --- | --- | --- | --- |
-| Number | ✅ | ✅ any operator | ✅ `value:` / `max:` |
-| String | ✅ | ✅ `==` `!=` `contains` | ❌ |
-| Boolean | ✅ prints `true`/`false` | ✅ on its own, no operator | ❌ |
+| Number | yes | any operator | `value:` / `max:` |
+| String | yes | `==` `!=` `contains` | no |
+| Boolean | prints `true`/`false` | on its own, no operator | no |
 
-A boolean used without an operator is the condition:
+A boolean with no operator is the condition:
 
 ```yaml
 condition: "is_player"
 condition: "has_potion_effect:poison"
 ```
 
-## A note on performance
+## Performance
 
-A nametag's content belongs to the entity wearing it, so DreamTags can normally
-render it once and send it to every viewer. **PlaceholderAPI expressions break
-that** — `%papi%` may read the viewer, so any layout using one falls back to
-rendering separately for each observer.
+A nametag's content belongs to the entity wearing it, so DreamTags normally
+renders it once and sends it to every viewer. A `%papi%` expression may read the
+viewer, so a layout using one is rendered per viewer instead.
 
-It still works; it just costs more with many players nearby. Prefer a
-[built-in](/placeholders/built-in) when an equivalent exists:
+It still works, it just costs more with many players nearby. Prefer a
+[built-in](/placeholders/built-in) when one exists:
 
 ```yaml
 pattern: "{health}"              # shared render
 pattern: "%player_health%"       # per viewer
 ```
 
-The startup log names any tag that ended up on the slower path, and why.
+The startup log names any tag on the slower path.

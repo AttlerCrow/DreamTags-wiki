@@ -47,10 +47,8 @@ images:
 
 The slot's own `y` is then relative to its row, not to the entity.
 
-::: warning Not available in effects
 An `effects:` grid cannot be attached to a component. Position it with `x` and
 `y`.
-:::
 
 ## The example that ships
 

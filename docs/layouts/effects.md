@@ -53,10 +53,8 @@ An effect with no matching image is skipped — the grid closes up around it.
 | `align` / `anchor` | `left` · `center` · `right` | `center` | Anchoring |
 | `condition` | see [Conditions](/layouts/conditions) | — | Whether the grid draws at all |
 
-::: warning `component:` does not apply here
-Unlike images, stacks and texts, an effects grid is not placed in a
+Unlike images, stacks and texts, an effects grid cannot be placed in a
 [component](/layouts/components) row. Position it with `x` and `y`.
-:::
 
 ## The expiry fade
 

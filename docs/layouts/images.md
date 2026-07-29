@@ -75,8 +75,8 @@ conditions that cannot both be true. See the
 ## merge, and when to reach for a stack
 
 Images that overlap perfectly and share `x`, `y`, `scale` and `component` can be
-collapsed into a single display, which removes the tiny perspective gap between
-layers. That is what `merge` allows.
+collapsed into one display, removing the perspective gap between layers. `merge`
+allows that.
 
 If you are deliberately overprinting pieces that must line up to the pixel — a
 fill inside its frame — prefer an explicit [stack](/layouts/stacks). It is
@@ -93,5 +93,4 @@ mana_bar:
   x: -40
 ```
 
-With `center` (the default) the image is centred on `x`, which is what you want
-for a bar sitting under a name.
+`center`, the default, centres the image on `x`.

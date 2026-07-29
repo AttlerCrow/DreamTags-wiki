@@ -1,11 +1,8 @@
 # config.yml
 
-Lives at `plugins/DreamTags/config.yml`. Everything here applies on
-`/dreamtags reload` — no restart needed.
+`plugins/DreamTags/config.yml`. Everything applies on `/dreamtags reload`.
 
 ## systems
-
-Master switches.
 
 ```yaml
 systems:
@@ -15,18 +12,12 @@ systems:
 
 | Key | Default | What it does |
 | --- | --- | --- |
-| `tags` | `true` | Mob tags and player nametags from `Packs/<pack>/tags/*.yml` |
-| `damage-indicators` | `false` | Floating combat numbers from `damage-indicators/*.yml` |
+| `tags` | `true` | Mob tags and player nametags |
+| `damage-indicators` | `false` | Floating combat numbers |
 
-Turning a system off loads it from an empty source rather than skipping the
-reload, which is what makes switching one off at runtime actually remove what is
-already on screen.
-
-::: tip Damage indicators are off by default
-Floating numbers are a strong stylistic choice, so DreamTags makes you opt in.
-Note that this only skips loading the folder — to stop the plugin listening to
-damage events at all, use `popups.builtin-damage-triggers: never`.
-:::
+Damage indicators are off because floating numbers are a strong stylistic
+choice. Turning this on only loads the folder — to stop DreamTags listening to
+damage events entirely, use `popups.builtin-damage-triggers: never`.
 
 ## Timing and range
 
@@ -39,18 +30,15 @@ keep-for: 60
 
 | Key | Default | What it does |
 | --- | --- | --- |
-| `update-interval` | `2` | Ticks between update passes. `2` = 10 passes per second |
-| `view-distance` | `15` | Blocks at which mob tags appear. The `look` trigger uses it too |
-| `view-angle` | `20` | Maximum angle in degrees for the `look` trigger |
-| `keep-for` | `60` | Ticks a tag stays after its last trigger. Individual tags can override it |
+| `update-interval` | `2` | Ticks between update passes. `2` = 10 per second |
+| `view-distance` | `15` | Blocks at which mob tags appear. Also used by the `look` trigger |
+| `view-angle` | `20` | Max angle in degrees for `look` |
+| `keep-for` | `60` | Ticks a tag stays after its last trigger. Tags can override it |
 
-`update-interval` is the latency with which a bar reflects a change, not an
-animation rate. At `2` a health change shows up within 100 ms.
+`update-interval` is how quickly a bar reflects a change, not an animation rate.
+At `2` a health change shows within 100 ms.
 
-::: warning Nametags use double the view distance
-Player nametags appear at `view-distance × 2` — 30 blocks with the default.
-Lowering this key shortens both.
-:::
+Player nametags use `view-distance × 2` — 30 blocks by default.
 
 ## ignored-entities
 
@@ -62,8 +50,8 @@ ignored-entities:
   - BLOCK_DISPLAY
 ```
 
-Entity types that never get a tag, whatever the tag definitions say. The display
-types are listed so tags never end up labelling other tags.
+Never get a tag, whatever the tag definitions say. The display types are listed
+so tags do not end up labelling other tags.
 
 ## tags
 
@@ -72,15 +60,13 @@ tags:
   default-attach: passenger
 ```
 
-How a tag rides its entity, unless a `tags/*.yml` entry overrides it.
-
 | Value | Behaviour |
 | --- | --- |
-| `passenger` | The tag is mounted on the entity. The client moves it every frame and the server sends **no position packets at all**. Cheapest by a wide margin |
-| `follow` | The tag teleports itself on every pass — one packet per tag, per viewer, per pass |
+| `passenger` | Mounted on the entity. The client moves it every frame; the server sends no position packets |
+| `follow` | Teleports itself every pass — one packet per tag, per viewer, per pass |
 
-Only use `follow` when a tag must sit somewhere the mount point cannot reach. A
-`motion:` equation on a tag forces it automatically.
+Use `follow` only when a tag must sit somewhere the mount point cannot reach. A
+`motion:` equation forces it automatically.
 
 ## nametags
 
@@ -89,8 +75,7 @@ nametags:
   show-self: true
 ```
 
-Whether players see their own nametag. The shipped `player_layout` includes your
-health bar, XP level and name, so seeing it is useful.
+Whether players see their own nametag.
 
 ## resources
 
@@ -99,14 +84,9 @@ resources:
   source: auto # auto | mmocore | auraskills
 ```
 
-Where player mana comes from.
-
-| Value | Behaviour |
-| --- | --- |
-| `auto` | MMOCore first, AuraSkills only if MMOCore is absent |
-| `mmocore` / `auraskills` | Force one. If it is not installed, mana reads `0` and a warning is logged at startup |
-
-MythicLib is consumed by MMOCore and is deliberately not a separate source.
+Where player mana comes from. `auto` prefers MMOCore and falls back to
+AuraSkills. Naming one that is not installed makes mana read `0`, with a warning
+at startup.
 
 ## popups
 
@@ -120,24 +100,20 @@ popups:
 
 | Key | Default | What it does |
 | --- | --- | --- |
-| `max-active` | `512` | Server-wide ceiling on live popups. Spawns past it are dropped silently — a safety valve, not a tuning knob |
-| `max-per-entity` | `8` | Live popups of one style, on one entity, for one viewer |
-| `min-interval` | `0` | Minimum ticks between two popups of the same style on the same entity for the same viewer. Tames damage-over-time and multi-hit AoE |
+| `max-active` | `512` | Server-wide cap. Spawns past it are dropped silently |
+| `max-per-entity` | `8` | Per style, per entity, per viewer |
+| `min-interval` | `0` | Minimum ticks between two popups of the same style on the same entity for one viewer |
 | `builtin-damage-triggers` | `auto` | Whether the vanilla `damage`/`crit` triggers are registered |
 
-::: warning MythicLib changes which triggers fire
-On `auto`, installing MythicLib **switches the vanilla `damage` and `crit`
-triggers off**, because MythicLib fires its own for the same hit and you would
-get two numbers per swing. The `mythiclib_damage` and `mythiclib_crit_damage`
-ids arrive instead.
+`min-interval` is what tames damage-over-time and multi-hit AoE.
 
-This is why the shipped indicators list all four ids — the same file then works
-on an RPG server and a vanilla one. See [damage indicators](/damage-indicators).
-:::
+On `auto`, installing MythicLib switches the vanilla `damage` and `crit`
+triggers off — MythicLib fires its own for the same hit, and you would get two
+numbers per swing. The `mythiclib_damage` and `mythiclib_crit_damage` ids arrive
+instead, which is why the shipped indicators list all four. See
+[damage indicators](/damage-indicators).
 
 ## pack
-
-Controls the generated resource pack.
 
 ```yaml
 pack:
@@ -150,14 +126,11 @@ pack:
 
 | Key | Default | What it does |
 | --- | --- | --- |
-| `type` | `zip` | `zip` → `build/DreamTags.zip`, `folder` → `build/`, `none` → do not generate |
-| `merge-external-folders` | `[]` | Other pack **folders** to merge into ours. Relative to `plugins/DreamTags/` |
-| `merge-external-zip-files` | `[]` | Other pack **zips** to merge in. Relative to `plugins/` |
-| `merge-into-external-pack` | `auto` | Push our pack into CraftEngine's or Nexo's instead. `auto` = on when one of them is installed |
-| `skip-initial-generation` | `true` | Skip generating at startup when the host plugin will build it anyway |
-
-DreamTags only ever writes under `assets/dreamtags`, so it stacks safely with
-other packs rather than fighting them.
+| `type` | `zip` | `zip` → `build/DreamTags.zip`, `folder` → `build/`, `none` → skip |
+| `merge-external-folders` | `[]` | Pack folders to merge in. Relative to `plugins/DreamTags/` |
+| `merge-external-zip-files` | `[]` | Pack zips to merge in. Relative to `plugins/` |
+| `merge-into-external-pack` | `auto` | Push ours into CraftEngine's or Nexo's instead |
+| `skip-initial-generation` | `true` | Skip generating at startup when the host plugin builds it anyway |
 
 ```yaml
 pack:
@@ -168,12 +141,12 @@ pack:
     - "CustomNameplates/resourcepack.zip"
 ```
 
-::: danger Do not merge from both sides
 Use `merge-external-*` **or** `merge-into-external-pack` for a given pack, never
-both. Merged from both directions the content lands in the output twice, and
-whichever side reads a file the other has not written yet silently merges a
-stale copy.
-:::
+both. Merged from both sides the content lands in the output twice, and whichever
+side reads a file the other has not written yet merges a stale copy.
+
+DreamTags only writes under `assets/dreamtags`, so it never fights another
+pack's content.
 
 ## debug
 
@@ -181,10 +154,4 @@ stale copy.
 debug: false
 ```
 
-Extra logging while diagnosing a pack that will not load.
-
-## Full reference
-
-The shipped file is commented throughout; this page mirrors it. If you have
-deleted a section, delete the whole `config.yml` and restart to get a fresh copy
-— DreamTags only writes files that do not already exist.
+Extra logging when diagnosing a pack that will not load.

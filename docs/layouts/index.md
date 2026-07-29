@@ -169,14 +169,12 @@ default_layout:
       condition: "{mob_level} > 0"
 ```
 
-Three things worth noticing:
-
-- The three `health_fill_*` slots all sit on **layer 4** with mutually exclusive
-  conditions, so exactly one is ever visible. That is how a bar changes colour.
-- `trail_damage` and `heal_incoming` use the same `health` value through
-  different [trailing listeners](/layouts/listeners#trailing) — one lags on the
-  way down, the other on the way up.
-- The level badge is hidden entirely on non-RPG mobs by `{mob_level} > 0`.
+- The three `health_fill_*` slots sit on layer 4 with mutually exclusive
+  conditions, so exactly one shows. That is how a bar changes colour.
+- `trail_damage` and `heal_incoming` read the same `health` value through
+  different [trailing listeners](/layouts/listeners#trailing) — one lags going
+  down, the other going up.
+- The level badge is hidden on non-RPG mobs by `{mob_level} > 0`.
 
 ## Duplicate ids
 

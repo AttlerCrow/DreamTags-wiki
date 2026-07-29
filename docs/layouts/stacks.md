@@ -51,10 +51,7 @@ Each entry under `layers:` accepts the same keys as an
 `align` and so on. They are drawn in the order written, so later entries appear
 on top.
 
-::: warning condition belongs on a layer, not on the stack
-A stack itself does not read `condition:`. Put the condition on each entry
-inside `layers:`.
-:::
+A stack itself does not read `condition:`. Put it on each entry inside `layers:`.
 
 ```yaml
 stacks:

@@ -122,14 +122,10 @@ floods the screen.
 
 ## Avoid doubling up
 
-::: warning
 Buff icons are already drawn persistently by an
-[`effects:` grid](/layouts/effects). Adding a buff **popup** on top means every
-new effect appears twice — once as a popup and once in the row.
-
-The shipped `default_popups.yml` has the buff popups commented out for exactly
-this reason.
-:::
+[`effects:` grid](/layouts/effects). Adding a buff popup on top makes every new
+effect appear twice — once as a popup, once in the row. The shipped
+`default_popups.yml` has the buff popups commented out for that reason.
 
 The same applies between popups and [damage indicators](/damage-indicators) that
 listen to the same trigger. DreamTags warns at load when it spots the overlap.

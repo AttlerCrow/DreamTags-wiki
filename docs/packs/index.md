@@ -1,9 +1,6 @@
 # Packs
 
-A pack is a folder of content under `plugins/DreamTags/Packs/`. Everything the
-plugin draws comes from one.
-
-## Folder layout
+A pack is a folder of content under `plugins/DreamTags/Packs/`.
 
 ```
 plugins/DreamTags/
@@ -12,122 +9,107 @@ plugins/DreamTags/
 │   ├── pixel.png
 │   ├── name_plate/{left,body,right}.png
 │   └── vanilla_effects/*.png    40 potion icons
-├── damage-indicators/           server-wide indicators (loaded last, wins)
+├── damage-indicators/           server-wide indicators
 ├── Packs/
 │   ├── default/
-│   │   ├── assets/              this pack's own PNGs (optional)
+│   │   ├── assets/              this pack's own PNGs
 │   │   ├── images/*.yml         PNG → frames
 │   │   ├── fonts/*.yml          PNG grid → bitmap font
 │   │   ├── backgrounds/*.yml    stretchable plates
 │   │   ├── layouts/*.yml        the designs
 │   │   ├── tags/*.yml           who wears what
-│   │   ├── popups/*.yml         floating one-shots
+│   │   ├── popups/*.yml
 │   │   └── damage-indicators/*.yml
 │   └── your_pack/
 └── build/
     └── DreamTags.zip            generated resource pack
 ```
 
-Every subfolder is optional. A pack that only adds one layout needs nothing but
-`layouts/`.
+Every subfolder is optional.
 
 ## Ids are global
 
-This is the most important rule, and the one that surprises people.
-
-**Ids are shared across all packs.** An image called `health_fill` in one pack
-can be used by a layout in another. Packs are not namespaces.
-
-The `soulmates_pack` shipped with the plugin demonstrates it — it brings its own
-PNGs and images, but its layout borrows from `default`:
+Ids are shared across all packs, not scoped to the one that declared them. An
+image defined in `default` can be used by a layout in your pack.
 
 ```yaml
 # Packs/soulmates_pack/layouts/soulmates_layouts.yml
 texts:
   name:
     pattern: "<white>{soulmates_display_name}</white>"
-    font: pixel              # ← defined in Packs/default/fonts/
-    background: name_plate   # ← defined in Packs/default/backgrounds/
+    font: pixel              # from Packs/default/fonts/
+    background: name_plate   # from Packs/default/backgrounds/
 ```
 
-That is the intended way to build on a base pack: reuse the ingredients, define
-only what is new.
+## Load order
 
-## Load order and overriding
-
-Packs load in **alphabetical order**, and a later pack **overrides** an id
-declared by an earlier one — with a warning in the console.
+Packs load alphabetically. A later pack overrides an id declared earlier, with a
+warning in the console.
 
 ```
-Packs/default/        loads first
+Packs/default/        first
 Packs/soulmates_pack/
 Packs/v2/
-Packs/zz_overrides/   loads last, wins every clash
+Packs/zz_overrides/   last, wins every clash
 ```
 
-So to restyle something from `default` without editing it, declare the same id
-in a pack whose name sorts later:
+To restyle something from `default` without editing it, declare the same id in a
+pack that sorts later:
 
 ```yaml
 # Packs/zz_overrides/images/my_images.yml
-health_fill:                          # same id as default's
+health_fill:
   file: my_prettier_fill.png
   type: progress
   anchor: left
   frames: 77
 ```
 
-Every layout pointing at `health_fill` now uses your texture, and updating the
-plugin will not undo it.
+Every layout using `health_fill` now uses your texture, and a plugin update will
+not undo it.
 
 ## Where PNGs are looked up
 
-`file:` in `images/*.yml` and the piece paths in `backgrounds/*.yml` are
-resolved in two places, in order:
+`file:` is resolved in two places, in order:
 
 1. `Packs/<this pack>/assets/`
 2. the shared `plugins/DreamTags/assets/`
 
-The pack's own folder wins. If the same filename exists in both, DreamTags logs
-a warning — that message exists precisely because "my PNG edit did nothing" is
-otherwise a long afternoon.
+The pack wins. If the same filename exists in both, a warning is logged.
 
-Paths may include subfolders (`vanilla_effects/poison.png`), but cannot escape
-`assets/`: `../` is rejected.
+Paths can include subfolders (`vanilla_effects/poison.png`) but cannot escape
+`assets/` — `../` is rejected.
 
-::: tip Two packs can ship the same filename
-Textures are namespaced per pack in the generated resource pack, so two packs
-can both have a `health_fill.png` without colliding. Only **ids** collide.
-:::
+Two packs can ship the same *filename* without colliding, since textures are
+namespaced per pack in the generated resource pack. Only ids collide.
 
-## damage-indicators lives in two places
+## damage-indicators is in two places
 
 | Location | Loaded |
 | --- | --- |
-| `Packs/<pack>/damage-indicators/` | with that pack, in alphabetical order |
-| `plugins/DreamTags/damage-indicators/` | **last**, so it wins |
+| `Packs/<pack>/damage-indicators/` | with that pack, alphabetically |
+| `plugins/DreamTags/damage-indicators/` | last, so it wins |
 
-The root folder is created empty on first start. It is where server-wide
-indicators belong — the ones that are yours, not a pack's.
+The root folder is created empty on first start. Server-wide indicators go there.
 
-## Making your own pack
+## Making your own
 
 1. Create `plugins/DreamTags/Packs/my_pack/`.
-2. Add only the subfolders you need.
+2. Add the subfolders you need.
 3. Put PNGs in `my_pack/assets/`.
 4. `/dreamtags reload`.
 
-Keeping your work in its own pack means a plugin update never touches it, and
-you can hand the folder to someone else as a unit.
+Your own pack survives plugin updates and can be handed to someone else as one
+folder.
 
-## Errors are contained
+## Errors
 
-A file that fails to parse is skipped with a warning naming the pack, the file
-and the reason. The rest of that pack, and every other pack, still loads. You
-will never lose every tag to one typo — but do read the console after a reload.
+A file that fails to parse is skipped with a warning naming the pack, file and
+reason. Everything else still loads, so one typo never takes down every tag.
+Check the console after a reload.
 
-## The generated resource pack
+## The generated pack
 
-Everything above is compiled into `build/DreamTags.zip`: fonts, image glyphs and
-`pack.mcmeta`. DreamTags writes only under `assets/dreamtags`, so it can be
-merged with other packs in either direction — see [`pack` in config.yml](/config#pack).
+Fonts, image glyphs and `pack.mcmeta` are compiled into `build/DreamTags.zip`.
+DreamTags only writes under `assets/dreamtags`, so it can be merged with other
+packs in either direction — see [`pack`](/config#pack).

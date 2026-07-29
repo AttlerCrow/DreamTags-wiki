@@ -86,11 +86,9 @@ pixel:
 `rows` lists the characters in reading order across the texture grid. `height`
 and `ascent` control how the glyphs sit on the baseline.
 
-::: tip Bitmap fonts need letter-spacing
 Glyphs in a bitmap font sit in fixed-width cells, so without `letter-spacing`
 they float apart with visible gutters. The shipped damage numbers use
 `letter-spacing: -2`.
-:::
 
 ```yaml
 damage_text:
@@ -168,11 +166,8 @@ level:
 
 Pins an icon to the left of the plate, chosen by the player's LuckPerms group.
 
-::: warning Requires a plate
 `rank-decoration` is only built when the text slot also has `background:`.
-Without a plate it is ignored silently. It also needs LuckPerms — without it, no
-icon is ever resolved.
-:::
+Without a plate it is ignored silently. It also needs LuckPerms.
 
 | Key | Type | Default | What it does |
 | --- | --- | --- | --- |
