@@ -3,7 +3,7 @@
 Values you drop into text, conditions and listeners.
 
 ```yaml
-pattern: "<red>{health}</red> / <gray>{max_health}</gray>"
+text-content: "<red>{health}</red> / <gray>{max_health}</gray>"
 condition: "{health_percentage} <= 0.2"
 listener:
   type: placeholder
@@ -52,11 +52,11 @@ decimal. Override per text slot with a `java.text.DecimalFormat` pattern:
 ```yaml
 texts:
   health:
-    pattern: "{health} / {max_health}"
+    text-content: "{health} / {max_health}"
     number-format: "#"        # 19 instead of 19.0
 
   percent:
-    pattern: "{health_percentage}"
+    text-content: "{health_percentage}"
     number-format: "0.00"     # 0.73
 ```
 
@@ -91,8 +91,8 @@ It still works, it just costs more with many players nearby. Prefer a
 [built-in](/placeholders/built-in) when one exists:
 
 ```yaml
-pattern: "{health}"              # shared render
-pattern: "%player_health%"       # per viewer
+text-content: "{health}"              # shared render
+text-content: "%player_health%"       # per viewer
 ```
 
 The startup log names any tag on the slower path.

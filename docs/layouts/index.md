@@ -13,7 +13,7 @@ my_layout:
       background: true
   texts:
     name:
-      pattern: "<white>{entity_name}</white>"
+      text-content: "<white>{entity_name}</white>"
       layer: 10
 ```
 
@@ -151,7 +151,7 @@ default_layout:
 
   texts:
     title:
-      pattern: "<white>{entity_name}</white>"
+      text-content: "<white>{entity_name}</white>"
       font: pixel
       background: name_plate
       layer: 10
@@ -160,7 +160,7 @@ default_layout:
 
     level:
       align: right
-      pattern: "<yellow>{mob_level}</yellow>"
+      text-content: "<yellow>{mob_level}</yellow>"
       font: pixel
       background: level_plate
       layer: 11

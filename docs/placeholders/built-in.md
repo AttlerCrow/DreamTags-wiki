@@ -32,7 +32,7 @@ or from a plugin that registered its own provider. Without any of them it reads
 ```yaml
 texts:
   health:
-    pattern: "<red>{health}</red>/<gray>{max_health}</gray>"
+    text-content: "<red>{health}</red>/<gray>{max_health}</gray>"
     number-format: "#"
 
 images:
@@ -54,7 +54,7 @@ images:
 | `{mob_id}` | Provider mob id. `<none>` when there is none |
 
 ```yaml
-pattern: "<white>{entity_name}</white>"
+text-content: "<white>{entity_name}</white>"
 condition: "{entity_type} == 'player'"
 condition: "{entity_name} contains Boss"
 ```

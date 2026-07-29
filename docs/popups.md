@@ -101,7 +101,7 @@ With a layout that is a single line:
 heal_popup_layout:
   texts:
     amount:
-      pattern: "<green>+{heal_rounded}</green>"
+      text-content: "<green>+{heal_rounded}</green>"
       layer: 10
 ```
 

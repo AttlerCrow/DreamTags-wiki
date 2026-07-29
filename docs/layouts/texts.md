@@ -6,7 +6,7 @@ stretchable plate behind it, a bitmap font, and a rank icon.
 ```yaml
 texts:
   name:
-    pattern: "<white>{entity_name}</white>"
+    text-content: "<white>{entity_name}</white>"
     font: pixel
     background: name_plate
     layer: 10
@@ -17,7 +17,7 @@ texts:
 
 | Key | Type | Default | What it does |
 | --- | --- | --- | --- |
-| `pattern` | string | — **required** | The text. MiniMessage + `{placeholders}` + `%papi%` |
+| `text-content` | string | — **required** | The text. MiniMessage + `{placeholders}` + `%papi%` |
 | `font` | string | — | Bitmap font id from `fonts/*.yml`. Omit for vanilla text |
 | `background` | string | — | Plate id from `backgrounds/*.yml` |
 | `x` | **whole** pixels | `0` | Horizontal offset of the whole slot (plate included) |
@@ -33,15 +33,15 @@ texts:
 | `component` | string | — | Attach to a [component](/layouts/components) row |
 | `rank-decoration` | section | — | Rank icon beside the plate (see below) |
 
-## Patterns
+## text-content
 
-`pattern` accepts [MiniMessage](https://docs.advntr.dev/minimessage/format) for
-colour and styling, plus [placeholders](/placeholders/):
+Accepts [MiniMessage](https://docs.advntr.dev/minimessage/format) for colour and
+styling, plus [placeholders](/placeholders/):
 
 ```yaml
-pattern: "<white>{entity_name}</white>"
-pattern: "<red>{health}</red>/<gray>{max_health}</gray>"
-pattern: "<gold>{mob_id}</gold> <yellow>Lv.{mob_level}</yellow>"
+text-content: "<white>{entity_name}</white>"
+text-content: "<red>{health}</red>/<gray>{max_health}</gray>"
+text-content: "<gold>{mob_id}</gold> <yellow>Lv.{mob_level}</yellow>"
 ```
 
 A misspelled placeholder is printed **literally** — seeing `{helth}` floating
@@ -54,18 +54,18 @@ one decimal. Override per text slot:
 
 ```yaml
 health_text:
-  pattern: "{health} / {max_health}"
+  text-content: "{health} / {max_health}"
   number-format: "#"        # 19 instead of 19.0
 
 percent:
-  pattern: "{health_percentage}"
+  text-content: "{health_percentage}"
   number-format: "0.00"     # 0.73
 ```
 
 Formatting always uses a neutral locale, so `1.5` never becomes `1,5`. That
 matters because [conditions](/layouts/conditions) compare against this output.
 
-An invalid pattern fails **when the pack loads**, not silently at render time.
+An invalid `number-format` pattern fails when the pack loads, not at render time.
 
 ## Fonts
 
@@ -92,7 +92,7 @@ they float apart with visible gutters. The shipped damage numbers use
 
 ```yaml
 damage_text:
-  pattern: "{damage}"
+  text-content: "{damage}"
   font: damage_digits
   letter-spacing: -2
   number-format: "#"
@@ -130,7 +130,7 @@ Attach one with `background:`:
 ```yaml
 texts:
   name:
-    pattern: "<white>{entity_name}</white>"
+    text-content: "<white>{entity_name}</white>"
     background: name_plate
 ```
 
@@ -156,7 +156,7 @@ plate, use `text-x` and `text-y`:
 
 ```yaml
 level:
-  pattern: "<yellow>{mob_level}</yellow>"
+  text-content: "<yellow>{mob_level}</yellow>"
   background: level_plate
   x: -46          # moves plate + text
   text-y: 1       # moves only the text, 1 px up inside the plate
@@ -181,7 +181,7 @@ Without a plate it is ignored silently. It also needs LuckPerms.
 ```yaml
 texts:
   name:
-    pattern: "<white>{entity_name}</white>"
+    text-content: "<white>{entity_name}</white>"
     font: pixel
     background: name_plate
     layer: 10

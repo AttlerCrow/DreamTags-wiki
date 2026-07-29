@@ -20,7 +20,7 @@ vanilla fallback.
 | **ModelEngine** | Tag height from the model's tallest bone |
 | **BetterModel** | Height, plus anchoring to a tagged bone that follows animations |
 | **LuckPerms** | `ranks:` on nametags, and `rank-decoration` icons |
-| **PlaceholderAPI** | `%papi%` in patterns, plus `%dreamtags_*%` for other plugins |
+| **PlaceholderAPI** | `%papi%` in any text, plus `%dreamtags_*%` for other plugins |
 | **CraftEngine** / **Nexo** | Hands them the generated resource pack |
 
 ## MythicMobs
@@ -41,7 +41,7 @@ boss_tag:
 ```yaml
 texts:
   name:
-    pattern: "<gold>{mob_id}</gold> <yellow>Lv.{mob_level}</yellow>"
+    text-content: "<gold>{mob_id}</gold> <yellow>Lv.{mob_level}</yellow>"
     condition: "{mob_level} > 0"
 ```
 
@@ -109,7 +109,7 @@ And rank icons beside the name plate:
 ```yaml
 texts:
   name:
-    pattern: "<white>{entity_name}</white>"
+    text-content: "<white>{entity_name}</white>"
     background: name_plate
     rank-decoration:
       gap: 2
@@ -124,10 +124,10 @@ Without LuckPerms, `ranks:` definitions are skipped with a warning and
 
 ## PlaceholderAPI
 
-Reading PAPI in any pattern, condition or listener:
+Reading PAPI in any text, condition or listener:
 
 ```yaml
-pattern: "<gray>%vault_eco_balance%</gray>"
+text-content: "<gray>%vault_eco_balance%</gray>"
 condition: "%mmocore_class% == 'Mage'"
 listener:
   type: placeholder

@@ -109,7 +109,7 @@ soulmates_pet_layout:
   texts:
     name:
       align: center
-      pattern: "<white>{soulmates_display_name}</white>"
+      text-content: "<white>{soulmates_display_name}</white>"
       font: pixel
       background: name_plate
       layer: 10

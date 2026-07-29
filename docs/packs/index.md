@@ -36,7 +36,7 @@ image defined in `default` can be used by a layout in your pack.
 # Packs/soulmates_pack/layouts/soulmates_layouts.yml
 texts:
   name:
-    pattern: "<white>{soulmates_display_name}</white>"
+    text-content: "<white>{soulmates_display_name}</white>"
     font: pixel              # from Packs/default/fonts/
     background: name_plate   # from Packs/default/backgrounds/
 ```

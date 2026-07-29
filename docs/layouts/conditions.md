@@ -149,7 +149,7 @@ Hiding a level badge on ordinary mobs:
 
 ```yaml
 level:
-  pattern: "<yellow>{mob_level}</yellow>"
+  text-content: "<yellow>{mob_level}</yellow>"
   background: level_plate
   condition: "{mob_level} > 0"
 ```
