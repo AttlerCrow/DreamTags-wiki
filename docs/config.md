@@ -13,9 +13,9 @@ systems:
 | Key | Default | What it does |
 | --- | --- | --- |
 | `tags` | `true` | Mob tags and player nametags |
-| `damage-indicators` | `false` | Floating combat numbers |
+| `damage-indicators` | `false` | Damage indicators |
 
-Damage indicators are off because floating numbers are a strong stylistic
+Damage indicators are off because they are a strong stylistic
 choice. Turning this on only loads the folder — to stop DreamTags listening to
 damage events entirely, use `popups.builtin-damage-triggers: never`.
 

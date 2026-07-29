@@ -1,6 +1,6 @@
 # Damage indicators
 
-Floating combat numbers. One entry is a complete indicator — no layout needed.
+One entry is a complete indicator — no layout needed.
 
 ```yaml
 damage:

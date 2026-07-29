@@ -4,7 +4,7 @@ layout: home
 hero:
   name: DreamTags
   text: Nametags and health bars, drawn with packets
-  tagline: Layered bitmap bars, buff rows, floating damage numbers and rank plates — built from YAML, with no entities on the server.
+  tagline: Layered bitmap bars, buff rows, damage indicators and rank plates — built from YAML, with no entities on the server.
   actions:
     - theme: brand
       text: Get started
@@ -38,7 +38,7 @@ Want the model first? [How it works](/guide/how-it-works).
 | [Images](/images) | Static frames, progress bars, animations |
 | [Layouts](/layouts/) | Images, text, buff grids and plates |
 | [Tags](/tags) | Which entities get which layout, and when |
-| [Damage indicators](/damage-indicators) | Floating combat numbers |
+| [Damage indicators](/damage-indicators) | Combat numbers over the entity that was hit |
 | [Placeholders](/placeholders/) | Every value you can use |
 
 Examples come from the `default` pack that ships with the plugin, so you can open
