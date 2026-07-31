@@ -1,6 +1,6 @@
 # DreamTags
 
-Simple, lightweight and feature-rich nametag and health bar plugin for
+Simple and lightweight nametag and health bar plugin for
 [Paper](https://papermc.io/software/paper) (and
 [Folia](https://papermc.io/software/folia)) servers, drawn with
 [text displays](https://minecraft.wiki/w/Display) and packets — nothing is
