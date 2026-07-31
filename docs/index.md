@@ -1,35 +1,47 @@
----
-layout: home
+# DreamTags
 
-hero:
-  name: DreamTags
-  text: Nametags and health bars, drawn with packets
-  tagline: Layered bitmap bars, buff rows, damage indicators and rank plates, built from YAML, with no entities on the server.
-  actions:
-    - theme: brand
-      text: Get started
-      link: /guide/getting-started
-    - theme: alt
-      text: How it works
-      link: /guide/how-it-works
+Simple, lightweight and feature-rich nametag and health bar plugin for
+[Paper](https://papermc.io/software/paper) (and
+[Folia](https://papermc.io/software/folia)) servers, drawn with
+[text displays](https://minecraft.wiki/w/Display) and packets — nothing is
+spawned on the server.
 
-features:
-  - title: No server-side entities
-    details: Tags are text displays sent as packets. Nothing is spawned, nothing is saved to a chunk, and /kill @e does not affect them.
-  - title: Bars are images
-    details: A PNG cut into frames rather than a row of characters. A slot points at the image and declares the value it follows.
-  - title: Built from YAML
-    details: Images, fonts and plates become layouts. Layouts become tags. Every id is reusable across packs.
-  - title: Generated resource pack
-    details: Add a PNG to assets/ and give it an id. Merges with CraftEngine, Nexo, ModelEngine and BetterModel.
----
+## Features
 
-## Where to start
+With this plugin you can build tags with customizable properties like:
 
-For a new install, read [Getting started](/guide/getting-started). A fresh
-install shows nothing until a tag is defined.
+* Health bars sliced from your own PNGs, with trailing damage and heal previews
+* Backgrounds (plates) that stretch to fit whatever text sits on them
+* Bitmap fonts built from your own glyph sheet
+* Rank icons beside the name, chosen by the player's LuckPerms group
+* Potion effect rows built from the entity's active effects
+* Damage indicators and popups, with equation-driven motion and fade
+* Animated images: frame sequences on a clock, or frames stepped by any value
+* Per-slot conditions — a red bar under 20%, a level badge only on RPG mobs
+* MiniMessage formatting and placeholders, including
+  [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) support
+* Targeting per entity: vanilla types, MythicMobs ids or every mob; players by
+  permission or rank
+* A resource pack generated on start, merged into CraftEngine, Nexo, ModelEngine
+  or BetterModel
+* ...and much more!
 
-For the underlying model, read [How it works](/guide/how-it-works).
+Works with MythicMobs, MMOCore, AuraSkills, MythicLib, ModelEngine, BetterModel,
+LuckPerms, PlaceholderAPI, CraftEngine and Nexo. None are required — missing
+plugins are detected at startup and skipped.
+
+## Installation
+
+Requires **Java 25** and Paper 1.21.11, 26.1.x or 26.2.x. Folia is supported.
+
+Drop the jar into `plugins/` and restart. A fresh install deliberately shows
+nothing until you define a tag, so start with
+[Getting started](/guide/getting-started).
+
+## Documentation
+
+- [Getting started](/guide/getting-started) — install, then show something
+- [How it works](/guide/how-it-works) — the model behind packets, images and ids
 
 | Section | Contents |
 | --- | --- |
@@ -43,3 +55,7 @@ For the underlying model, read [How it works](/guide/how-it-works).
 
 Examples come from the `default` pack that ships with the plugin, so the same
 file can be opened on your server.
+
+## Images
+
+<!-- Screenshots go here. Put the PNGs in docs/public/ and link them as /name.png -->
