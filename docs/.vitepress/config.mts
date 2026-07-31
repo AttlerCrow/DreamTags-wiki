@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'DreamTags',
-  description: 'Simple, lightweight and feature-rich nametag and health bar plugin for Paper and Folia servers',
+  description: 'Simple and lightweight nametag and health bar plugin for Paper and Folia servers',
   lang: 'en-US',
 
   // Repository name on GitHub Pages. Change this if the wiki repo is renamed,
