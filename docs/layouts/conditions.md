@@ -1,6 +1,6 @@
 # Conditions
 
-`condition:` decides whether a slot draws. Works on
+`condition:` controls whether a slot draws. It works on
 [images](/layouts/images), [texts](/layouts/texts),
 [stack layers](/layouts/stacks), [effects](/layouts/effects) grids and
 [components](/layouts/components).
@@ -25,7 +25,7 @@ condition: "{entity_name} contains Boss"
 condition: "%mmocore_class% == 'Mage'"
 ```
 
-### A list — all must pass
+### A list, where all must pass
 
 ```yaml
 condition:
@@ -35,7 +35,7 @@ condition:
 
 ### Named entries
 
-Names are labels; evaluation follows YAML order.
+Names are labels only. Evaluation follows YAML order.
 
 ```yaml
 condition:
@@ -88,20 +88,26 @@ argument does not break the expression.
 | `==` `!=` | Numeric only if both sides are numeric placeholders or literals, otherwise string |
 | `contains` | Always string |
 
-Quote string literals:
+Quote string literals. Both `'...'` and `"..."` are accepted:
 
 ```yaml
 condition: "{entity_type} == 'zombie'"
 condition: "{buff_name} == 'wind charged'"
 ```
 
+On a string-compared side, a placeholder must be written with braces. `contains`
+and a string `==` or `!=` resolve only `{...}` and `%...%`; any other text is
+treated as a literal. Braces remain optional on numeric sides and in the boolean
+form below.
+
 `{health_percentage}` and `{mana_percentage}` run **0.0 to 1.0**, not 0 to 100.
 Half health is `0.5`.
 
 ## Booleans
 
-Leave out the operator and the whole expression is evaluated as a boolean — a
-boolean placeholder, a `true`/`false` literal, or a boolean popup variable:
+An entry with no `compare-to` is parsed as a complete expression. If it contains
+no operator it is evaluated as a boolean, which may be a boolean placeholder, a
+`true`/`false` literal, or a boolean popup variable:
 
 ```yaml
 condition: "is_player"
@@ -109,8 +115,11 @@ condition: "has_potion_effect:poison"
 condition: "{dying}"
 ```
 
-Other plugins extend conditions this way: anything registered as a boolean
-placeholder works here.
+If it does contain an operator, that operator is applied as normal. This is why
+the named-entry example above can write a full comparison inside `value:`
+without a separate `compare-to`.
+
+Anything registered as a boolean placeholder by another plugin can be used here.
 
 ## Chaining
 
@@ -120,11 +129,11 @@ Entries evaluate top to bottom with no precedence:
 a OR b AND c   =>   (a OR b) AND c
 ```
 
-Order the entries to read the way you want them applied.
+Order the entries in the sequence they should be applied.
 
 ## Examples
 
-Swapping a bar's colour — three slots on one layer, mutually exclusive:
+Swapping a bar's colour, using three mutually exclusive slots on one layer:
 
 ```yaml
 health_fill_normal:
@@ -168,6 +177,9 @@ health_break:
 health_fill_normal:
   condition: "{dying} == false"
 ```
+
+`== false` inverts a boolean variable. It is reliable here because `{dying}` is
+published on every mob tag, not only during the linger.
 
 ## Errors
 

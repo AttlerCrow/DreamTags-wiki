@@ -29,8 +29,8 @@ Every subfolder is optional.
 
 ## Ids are global
 
-Ids are shared across all packs, not scoped to the one that declared them. An
-image defined in `default` can be used by a layout in your pack.
+Ids are shared across all packs rather than scoped to the one that declared
+them. An image defined in `default` can be used by a layout in another pack.
 
 ```yaml
 # Packs/soulmates_pack/layouts/soulmates_layouts.yml
@@ -43,17 +43,17 @@ texts:
 
 ## Load order
 
-Packs load alphabetically. A later pack overrides an id declared earlier, with a
-warning in the console.
+Packs load alphabetically. A later pack overrides an id declared earlier and
+logs a warning to the console.
 
 ```
 Packs/default/        first
 Packs/soulmates_pack/
 Packs/v2/
-Packs/zz_overrides/   last, wins every clash
+Packs/zz_overrides/   last, overrides every clash
 ```
 
-To restyle something from `default` without editing it, declare the same id in a
+To restyle content from `default` without editing it, declare the same id in a
 pack that sorts later:
 
 ```yaml
@@ -65,8 +65,8 @@ health_fill:
   frames: 77
 ```
 
-Every layout using `health_fill` now uses your texture, and a plugin update will
-not undo it.
+Every layout using `health_fill` then uses that texture, and a plugin update
+does not revert it.
 
 ## Where PNGs are looked up
 
@@ -75,10 +75,11 @@ not undo it.
 1. `Packs/<this pack>/assets/`
 2. the shared `plugins/DreamTags/assets/`
 
-The pack wins. If the same filename exists in both, a warning is logged.
+The pack takes precedence. If the same filename exists in both, a warning is
+logged.
 
 Paths can include subfolders (`vanilla_effects/poison.png`) but cannot escape
-`assets/` — `../` is rejected.
+`assets/`; `../` is rejected.
 
 Two packs can ship the same *filename* without colliding, since textures are
 namespaced per pack in the generated resource pack. Only ids collide.
@@ -88,7 +89,7 @@ namespaced per pack in the generated resource pack. Only ids collide.
 | Location | Loaded |
 | --- | --- |
 | `Packs/<pack>/damage-indicators/` | with that pack, alphabetically |
-| `plugins/DreamTags/damage-indicators/` | last, so it wins |
+| `plugins/DreamTags/damage-indicators/` | last, so it takes precedence |
 
 The root folder is created empty on first start. Server-wide indicators go there.
 
@@ -99,17 +100,17 @@ The root folder is created empty on first start. Server-wide indicators go there
 3. Put PNGs in `my_pack/assets/`.
 4. `/dreamtags reload`.
 
-Your own pack survives plugin updates and can be handed to someone else as one
+A separate pack survives plugin updates and can be distributed as a single
 folder.
 
 ## Errors
 
 A file that fails to parse is skipped with a warning naming the pack, file and
-reason. Everything else still loads, so one typo never takes down every tag.
-Check the console after a reload.
+reason. Everything else still loads, so a single typo does not disable every
+tag. Check the console after a reload.
 
 ## The generated pack
 
 Fonts, image glyphs and `pack.mcmeta` are compiled into `build/DreamTags.zip`.
 DreamTags only writes under `assets/dreamtags`, so it can be merged with other
-packs in either direction — see [`pack`](/config#pack).
+packs in either direction. See [`pack`](/config#pack).

@@ -20,17 +20,17 @@ stacks:
 
 ## Why stacks exist
 
-Separate slots on different layers are separated in depth so they do not
-z-fight. That gap is real distance, and at a distance it shows: two textures of
-the same width project at very slightly different sizes, so a bar fill can bleed
-a sub-pixel past its frame.
+Separate slots on different layers are offset in depth to avoid z-fighting. That
+offset is real distance, so two textures of the same width project at very
+slightly different sizes and a bar fill can bleed a sub-pixel past its frame at
+range.
 
-A stack puts every piece in a single display at a single depth. No z-fighting,
-no perspective bleed, at any distance.
+A stack puts every piece in a single display at a single depth, which removes
+both the z-fighting and the perspective difference.
 
-Use a stack when pieces must line up **exactly** — a fill inside its frame, a
-gauge with an overlay. Use ordinary [image slots](/layouts/images) when the
-pieces are just near each other.
+Use a stack when pieces must line up **exactly**, such as a fill inside its
+frame or a gauge with an overlay. Ordinary [image slots](/layouts/images) are
+sufficient when the pieces only need to be near each other.
 
 ## Keys
 
@@ -47,9 +47,12 @@ pieces are just near each other.
 ## layers
 
 Each entry under `layers:` accepts the same keys as an
-[image slot](/layouts/images) — `image`, `condition`, `listener`, `background`,
-`align` and so on. They are drawn in the order written, so later entries appear
-on top.
+[image slot](/layouts/images): `image`, `condition`, `listener`, `align` and so
+on. They are drawn in the order written, so later entries appear on top.
+
+`background:` is accepted on a layer but has no effect inside a stack. It does
+not set the stack's reference width, which is always taken from the widest
+declared layer.
 
 A stack itself does not read `condition:`. Put it on each entry inside `layers:`.
 
@@ -84,5 +87,9 @@ stacks:
 
 ## Centring
 
-Every layer is centred against the widest visible one, so a 77 px fill sits
-correctly inside a 79 px frame without any manual offset.
+Every layer is centred against the widest layer **declared** in the stack, so a
+77 px fill is positioned inside a 79 px frame with no manual offset.
+
+The reference width is fixed when the pack loads and counts every declared
+layer, including layers currently hidden by `condition:`. Hiding the widest
+layer therefore does not re-centre the remaining ones.

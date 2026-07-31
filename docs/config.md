@@ -15,9 +15,9 @@ systems:
 | `tags` | `true` | Mob tags and player nametags |
 | `damage-indicators` | `false` | Damage indicators |
 
-Damage indicators are off because they are a strong stylistic
-choice. Turning this on only loads the folder — to stop DreamTags listening to
-damage events entirely, use `popups.builtin-damage-triggers: never`.
+Damage indicators are off by default because they are a strong stylistic choice.
+Turning this on only loads the folder. To stop DreamTags listening to damage
+events entirely, use `popups.builtin-damage-triggers: never`.
 
 ## Timing and range
 
@@ -38,7 +38,7 @@ keep-for: 60
 `update-interval` is how quickly a bar reflects a change, not an animation rate.
 At `2` a health change shows within 100 ms.
 
-Player nametags use `view-distance × 2` — 30 blocks by default.
+Player nametags use `view-distance × 2`, or 30 blocks by default.
 
 ## ignored-entities
 
@@ -50,8 +50,8 @@ ignored-entities:
   - BLOCK_DISPLAY
 ```
 
-Never get a tag, whatever the tag definitions say. The display types are listed
-so tags do not end up labelling other tags.
+These never get a tag, regardless of the tag definitions. The display types are
+listed so that tags do not label other tags.
 
 ## tags
 
@@ -63,10 +63,10 @@ tags:
 | Value | Behaviour |
 | --- | --- |
 | `passenger` | Mounted on the entity. The client moves it every frame; the server sends no position packets |
-| `follow` | Teleports itself every pass — one packet per tag, per viewer, per pass |
+| `follow` | Teleported every pass: one packet per tag, per viewer, per pass |
 
 Use `follow` only when a tag must sit somewhere the mount point cannot reach. A
-`motion:` equation forces it automatically.
+`motion:` equation selects it automatically.
 
 ## nametags
 
@@ -85,8 +85,8 @@ resources:
 ```
 
 Where player mana comes from. `auto` prefers MMOCore and falls back to
-AuraSkills. Naming one that is not installed makes mana read `0`, with a warning
-at startup.
+AuraSkills. Naming a source that is not installed makes mana read `0`, with a
+warning at startup.
 
 ## popups
 
@@ -105,13 +105,13 @@ popups:
 | `min-interval` | `0` | Minimum ticks between two popups of the same style on the same entity for one viewer |
 | `builtin-damage-triggers` | `auto` | Whether the vanilla `damage`/`crit` triggers are registered |
 
-`min-interval` is what tames damage-over-time and multi-hit AoE.
+`min-interval` limits damage-over-time and multi-hit AoE.
 
 On `auto`, installing MythicLib switches the vanilla `damage` and `crit`
-triggers off — MythicLib fires its own for the same hit, and you would get two
-numbers per swing. The `mythiclib_damage` and `mythiclib_crit_damage` ids arrive
-instead, which is why the shipped indicators list all four. See
-[damage indicators](/damage-indicators).
+triggers off, because MythicLib fires its own for the same hit and both together
+would produce two numbers per swing. The `mythiclib_damage` and
+`mythiclib_crit_damage` ids arrive instead, so the shipped indicators list all
+four. See [damage indicators](/damage-indicators).
 
 ## pack
 
@@ -142,10 +142,10 @@ pack:
 ```
 
 Use `merge-external-*` **or** `merge-into-external-pack` for a given pack, never
-both. Merged from both sides the content lands in the output twice, and whichever
-side reads a file the other has not written yet merges a stale copy.
+both. Merging from both sides writes the content into the output twice, and
+whichever side reads a file the other has not written yet merges a stale copy.
 
-DreamTags only writes under `assets/dreamtags`, so it never fights another
+DreamTags only writes under `assets/dreamtags`, so it does not overwrite another
 pack's content.
 
 ## debug

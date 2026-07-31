@@ -29,10 +29,10 @@ own nametag, only other people's.
 
 | Scope | Meaning |
 | --- | --- |
-| `global` | Everyone nearby. Default for nametags |
-| `solo` | Only you. Default for damage indicators |
+| `global` | Everyone nearby. The default for nametags |
+| `solo` | Only you. The default for damage indicators |
 | `none` | Nobody, not even you |
-| `party` | Your party — needs MMOCore |
+| `party` | Your party. Requires MMOCore |
 
 Plugins can register their own; they appear in tab completion automatically.
 
@@ -46,7 +46,8 @@ Plugins can register their own; they appear in tab completion automatically.
 | `/dreamtags testeffects` | `dreamtags.admin` | Test pig with every vanilla potion effect applied one by one |
 | `/dreamtags testeffectsplayer` | `dreamtags.admin` | The same on yourself |
 
-The test commands are for checking a buff row without hunting for potions.
+The test commands apply the effects directly, for checking a buff row without
+collecting potions.
 
 ## Permission defaults
 
@@ -60,8 +61,8 @@ The test commands are for checking a buff row without hunting for potions.
 ## Reloading
 
 `/dreamtags reload` re-reads `config.yml` and every pack without a restart,
-including the `systems:` switches. A file with an error is skipped with a warning
-and everything else keeps working.
+including the `systems:` switches. A file with an error is skipped with a
+warning and everything else continues to load.
 
 The resource pack is rebuilt as part of the reload. Players need to re-download
 it to see new textures; `/dreamtags pack` only regenerates the file on disk.

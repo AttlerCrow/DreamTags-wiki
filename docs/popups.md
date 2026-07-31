@@ -1,6 +1,6 @@
 # Popups
 
-A popup is a one-shot floating element: it spawns on a trigger, plays a short
+A popup is a one-shot floating element. It spawns on a trigger, plays a short
 animation and disappears. `Packs/<pack>/popups/*.yml`.
 
 ```yaml
@@ -23,8 +23,8 @@ They share the same engine. The difference is what they draw:
 | Needs a layout | **Yes** | No, it is generated |
 | Lives in | `popups/` | `damage-indicators/` |
 
-If all you want is a number, use a damage indicator — it is far less to write.
-Reach for a popup when it needs an icon, a plate, or several pieces.
+For a plain number, use a damage indicator; it requires much less configuration.
+Use a popup when the content needs an icon, a plate, or several pieces.
 
 ## Keys
 
@@ -55,7 +55,7 @@ Reach for a popup when it needs an icon, a plate, or several pieces.
 
 | Value | Who sees it |
 | --- | --- |
-| `nearby` | Everyone in range — the default for popups |
+| `nearby` | Everyone in range. The default for popups |
 | `attacker` | Whoever dealt the hit |
 | `victim` | Whoever took it |
 | `attacker_or_victim` | Both |
@@ -72,8 +72,7 @@ What a popup can show depends on what triggered it:
 | heal | `{heal}` `{heal_rounded}` `{heal_reason}` |
 | buff | `{buff_name}` `{buff_level}` `{buff_duration}` |
 
-`{buff_name}` is lowercase with spaces, not underscores — `wind charged`, not
-`WIND_CHARGED`.
+`{buff_name}` is lowercase with spaces: `wind charged`, not `WIND_CHARGED`.
 
 ## The shipped example
 
@@ -117,15 +116,14 @@ Three global ceilings in [config.yml](/config#popups) protect the server:
 | `popups.max-per-entity` | `8` | Per style, per entity, per viewer |
 | `popups.min-interval` | `0` | Minimum ticks between two of the same style on the same entity for one viewer |
 
-`min-interval` is the one to reach for when damage-over-time or multi-hit AoE
-floods the screen.
+`min-interval` is the setting that limits damage-over-time and multi-hit AoE.
 
 ## Avoid doubling up
 
 Buff icons are already drawn persistently by an
-[`effects:` grid](/layouts/effects). Adding a buff popup on top makes every new
-effect appear twice — once as a popup, once in the row. The shipped
+[`effects:` grid](/layouts/effects). Adding a buff popup as well makes every new
+effect appear twice, once as a popup and once in the row. The shipped
 `default_popups.yml` has the buff popups commented out for that reason.
 
 The same applies between popups and [damage indicators](/damage-indicators) that
-listen to the same trigger. DreamTags warns at load when it spots the overlap.
+listen to the same trigger. DreamTags warns at load when it detects the overlap.

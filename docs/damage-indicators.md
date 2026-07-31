@@ -1,6 +1,6 @@
 # Damage indicators
 
-One entry is a complete indicator — no layout needed.
+One entry is a complete indicator. No layout is needed.
 
 ```yaml
 damage:
@@ -14,14 +14,14 @@ damage:
   fade: "255 * (1 - t * t)"
 ```
 
-Set `systems.damage-indicators: true` in [config.yml](/config#systems) first —
+Set `systems.damage-indicators: true` in [config.yml](/config#systems) first;
 they are off by default.
 
 ## Where they live
 
 | Location | Loaded |
 | --- | --- |
-| `plugins/DreamTags/damage-indicators/` | last, so it wins |
+| `plugins/DreamTags/damage-indicators/` | last, so it takes precedence |
 | `Packs/<pack>/damage-indicators/` | with that pack, alphabetically |
 
 The root folder is created empty on first start.
@@ -40,9 +40,10 @@ The root folder is created empty on first start.
 | `mythiclib_damage` / `mythiclib_crit_damage` | With MythicLib installed |
 
 With [`popups.builtin-damage-triggers: auto`](/config#popups), installing
-MythicLib switches off vanilla `damage` and `crit` — it fires its own for the
-same hit, and you would get two numbers per swing. That is why the shipped file
-lists all four ids: the ones that do not apply simply never arrive.
+MythicLib switches off vanilla `damage` and `crit`, because MythicLib fires its
+own triggers for the same hit and both together would produce two numbers per
+swing. The shipped file lists all four ids; the ones that do not apply never
+arrive.
 
 ## Audience
 
@@ -55,8 +56,8 @@ lists all four ids: the ones that do not apply simply never arrive.
 | `nearby` | Everyone in range |
 | `self` | The player it is anchored to |
 
-Left alone, a player only sees numbers they caused. Set `show-to` explicitly for
-environmental damage, where nobody dealt the hit:
+By default a player only sees numbers they caused. Set `show-to` explicitly for
+environmental damage, where no entity dealt the hit:
 
 ```yaml
 fall:
@@ -83,8 +84,8 @@ Variables: `{damage}`, `{damage_rounded}`, `{damage_cause}`, `{damage_type}`,
 `{critical}`, `{damager_name}`, and for healing `{heal}` and `{heal_rounded}`.
 
 `damage_digits` is a fixed-width cell strip, so without `letter-spacing: -2` the
-numbers sit in visible gutters. It only ships `0`–`9`, so a `number-format` with
-a comma would draw a missing glyph.
+numbers are separated by visible gutters. It only ships `0`–`9`, so a
+`number-format` containing a comma draws a missing glyph.
 
 ## Background
 
@@ -101,7 +102,7 @@ text-shadow: false
 see-through: false
 ```
 
-The key is `text-shadow`, not `shadow`.
+The key is `text-shadow`. `shadow` is not recognised.
 
 ## Movement
 
@@ -116,7 +117,7 @@ The key is `text-shadow`, not `shadow`.
 | `motion` | — | `x` / `y` / `z` equations |
 
 `anchor: model-top` follows the BetterModel or ModelEngine silhouette rather
-than the vanilla hitbox. `space: world` is what lets simultaneous hits scatter
+than the vanilla hitbox. `space: world` allows simultaneous hits to scatter
 instead of stacking into one column.
 
 ## Equations
@@ -150,7 +151,7 @@ sizing:
   z: "1"
 ```
 
-Shorthands, if you would rather not write equations:
+Shorthands are accepted instead of equations:
 
 ```yaml
 sizing: {from: 1.5, to: 0.9}    # linear ramp
@@ -213,13 +214,13 @@ crit:
   fade: "255 * (1 - t * t * t)"
 ```
 
-Both use the same white PNG tinted by `color`, so recolouring never needs a new
-texture.
+Both use the same white PNG tinted by `color`, so recolouring does not require a
+new texture.
 
 ## Recipes
 
-Environmental damage, off by default because a number on every poison tick is a
-lot of noise:
+Environmental damage, off by default because it produces a number on every
+poison tick:
 
 ```yaml
 fall:
@@ -257,9 +258,9 @@ magic:
 
 ## Volume
 
-Three knobs for damage-over-time and multi-hit AoE: `min-value` on the
+Three settings limit damage-over-time and multi-hit AoE: `min-value` on the
 indicator, and [`popups.min-interval`](/config#popups) and
 [`popups.max-per-entity`](/config#popups) globally.
 
-If a [popup](/popups) listens to the same trigger you get two numbers per hit;
-DreamTags warns about that at load.
+If a [popup](/popups) listens to the same trigger, each hit produces two
+numbers. DreamTags warns at load when it detects this.

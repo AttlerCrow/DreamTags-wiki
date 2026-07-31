@@ -1,7 +1,7 @@
 # Layout: texts
 
-`texts:` draws a line of text — a name, a level, a number. It can carry a
-stretchable plate behind it, a bitmap font, and a rank icon.
+`texts:` draws a line of text, such as a name, a level or a number. It can carry
+a stretchable plate behind it, a bitmap font, and a rank icon.
 
 ```yaml
 texts:
@@ -44,8 +44,8 @@ text-content: "<red>{health}</red>/<gray>{max_health}</gray>"
 text-content: "<gold>{mob_id}</gold> <yellow>Lv.{mob_level}</yellow>"
 ```
 
-A misspelled placeholder is printed **literally** — seeing `{helth}` floating
-over a mob is how you find the typo.
+A misspelled placeholder is printed **literally**, so `{helth}` appears verbatim
+over the mob.
 
 ### number-format
 
@@ -62,10 +62,11 @@ percent:
   number-format: "0.00"     # 0.73
 ```
 
-Formatting always uses a neutral locale, so `1.5` never becomes `1,5`. That
-matters because [conditions](/layouts/conditions) compare against this output.
+Formatting always uses a neutral locale, so `1.5` never becomes `1,5`.
+[Conditions](/layouts/conditions) compare against this output.
 
-An invalid `number-format` pattern fails when the pack loads, not at render time.
+An invalid `number-format` pattern fails when the pack loads rather than at
+render time.
 
 ## Fonts
 
@@ -87,7 +88,7 @@ pixel:
 and `ascent` control how the glyphs sit on the baseline.
 
 Glyphs in a bitmap font sit in fixed-width cells, so without `letter-spacing`
-they float apart with visible gutters. The shipped damage numbers use
+they are separated by visible gutters. The shipped damage numbers use
 `letter-spacing: -2`.
 
 ```yaml
@@ -101,7 +102,7 @@ damage_text:
 ## Backgrounds (plates)
 
 A plate is a stretchable panel drawn behind variable-width text. It resizes to
-the text on every render, so a long name and a short one both look right.
+the text on every render, so it fits both long and short names.
 
 Defined in `backgrounds/*.yml`:
 
@@ -134,12 +135,12 @@ texts:
     background: name_plate
 ```
 
-Paths are looked up in the pack's `assets/` first, then the shared one — so two
-backgrounds can point at the same PNGs with different metrics. That is exactly
-what `level_plate` does in the default pack:
+Paths are looked up in the pack's `assets/` first, then the shared one. Two
+backgrounds can therefore point at the same PNGs with different metrics, which
+is what `level_plate` does in the default pack:
 
 ```yaml
-# Same textures as name_plate, different metrics — which is why the pieces
+# Same textures as name_plate with different metrics, which is why the pieces
 # are named by path instead of by folder.
 level_plate:
   left: name_plate/left.png
@@ -193,5 +194,5 @@ texts:
         default: rank_default_icon
 ```
 
-The icon repositions itself every render as the plate grows and shrinks with the
-name, so it never overlaps.
+The icon is repositioned every render as the plate grows and shrinks with the
+name, so the two do not overlap.

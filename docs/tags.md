@@ -15,13 +15,13 @@ my_mob_tag:
 `for:` decides the kind: **mob tags**, or **player nametags** with
 `for: players`.
 
-The `default` pack defines no tags — `default_tags.yml` is all comments. See
+The `default` pack defines no tags; `default_tags.yml` is all comments. See
 [Getting started](/guide/getting-started#show-something).
 
 ## for:
 
 Accepts a string or a list, defaults to `mobs`. When several tags match the same
-entity, the most specific wins:
+entity, the most specific one applies:
 
 | Form | Specificity | Matches |
 | --- | --- | --- |
@@ -43,7 +43,7 @@ boss_tag:
   layouts: [boss_layout]
 ```
 
-Providers come from plugins — `mythicmobs` with MythicMobs installed, plus any
+Providers come from plugins: `mythicmobs` with MythicMobs installed, plus any
 registered through the API.
 
 Forms combine: `for: [mythicmobs, mobs]` covers that provider at 300 and
@@ -52,7 +52,7 @@ everything else at 100.
 `for: players` cannot be mixed with mob selectors; doing so fails to load.
 
 Two definitions with identical criteria and triggers produce a warning, and the
-one loaded later wins.
+one loaded later takes precedence.
 
 ## Mob tag keys
 
@@ -88,21 +88,21 @@ Plugins can add their own, like `soulmates:combat` in the example pack.
 `api` works even when it is not listed in `show-on`.
 
 The damage packet is broadcast to everyone tracking the entity, so **every
-nearby player** sees the bar appear, not only the attacker.
+nearby player** sees the bar appear, including players who did not attack it.
 
 ### attach
 
-`passenger` mounts the tag on the entity — the client moves it and the server
-sends no position packets. `follow` teleports it every pass. Prefer `passenger`;
-it is the default and much cheaper.
+`passenger` mounts the tag on the entity, so the client moves it and the server
+sends no position packets. `follow` teleports it every pass. `passenger` is the
+default and is considerably cheaper.
 
 A non-zero `motion:` switches to `follow` automatically.
 
 ### death.linger
 
-Kill a chicken in one hit and the tag normally vanishes mid-frame, so a trailing
-fill never drains. Lingering keeps the tag on screen at 0 health so the animation
-finishes.
+When an entity dies in one hit the tag normally disappears mid-animation, so a
+trailing fill never drains. Lingering keeps the tag on screen at 0 health until
+the animation finishes.
 
 ```yaml
 my_mob_tag:
@@ -112,18 +112,19 @@ my_mob_tag:
   layouts: [default_layout]
 ```
 
-The tag switches to `follow` on its own when linger is set — a mounted display is
-a passenger, so the client would drop it the moment the mob despawns. The tag
-finishes where the mob died.
+The tag switches to `follow` automatically when linger is set, because a mounted
+display is a passenger and the client drops it as soon as the mob despawns. The
+tag finishes where the mob died.
 
-Two variables are published while it plays:
+Two variables are always published, and take these values during the linger:
 
 | Variable | Value |
 | --- | --- |
-| `{dying}` | `true` for the whole linger |
-| `{death_progress}` | `0` → `1` across it |
+| `{dying}` | `true` for the whole linger, `false` otherwise |
+| `{death_progress}` | `0` → `1` across it, `0` otherwise |
 
-So a "bar shatters" animation needs no new feature — a
+Because both are always present, they can be compared in any condition. A
+"bar shatters" animation is built from them directly, using a
 [`frame-defined`](/images#frame-defined) image stepped by the progress:
 
 ```yaml
@@ -152,14 +153,14 @@ images:
 | `layouts` | list | — required | What to draw |
 
 Nametags do not accept `show-on`, `keep-for`, `attach`, `motion` or
-`death.linger`. They are always visible within
+`death.linger`. They are visible within
 [`view-distance × 2`](/config#timing-and-range).
 
 ### Which one a player gets
 
 1. Definitions whose `permission:` the player lacks are discarded.
-2. A `ranks:` definition wins, picking the player's highest-weight LuckPerms
-   group.
+2. A `ranks:` definition takes precedence, using the player's highest-weight
+   LuckPerms group.
 3. Otherwise a `permission:` definition.
 4. Otherwise the one with neither.
 

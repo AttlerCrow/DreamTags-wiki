@@ -10,7 +10,7 @@ bar_frame:
 ```
 
 `type` describes how frames are cut from the PNG. What fills a bar is
-`listener:` on the slot in the [layout](/layouts/images) — so the same image can
+`listener:` on the slot in the [layout](/layouts/images), so the same image can
 be a health bar in one layout and a mana bar in another.
 
 ## Common keys
@@ -32,11 +32,11 @@ be a health bar in one layout and a mana bar in another.
 | `solid` | Flat colour replace |
 | `recolor` | Keeps shading: pixel brightness × colour |
 
-Saves shipping four near-identical PNGs for four bar colours.
+This avoids shipping four near-identical PNGs for four bar colours.
 
 ## static
 
-One frame. Frames, icons, badges, plate bodies.
+One frame. Used for frames, icons, badges and plate bodies.
 
 ```yaml
 bar_frame:
@@ -65,16 +65,16 @@ health_fill:
 `anchor: bottom` gives a vertical gauge.
 
 The smoothest useful value for `frames` is one per pixel of width. The shipped
-fills are 77 px wide, so they use `frames: 77`. More adds file size and no
-visible steps.
+fills are 77 px wide, so they use `frames: 77`. Higher values add file size
+without adding visible detail.
 
-`frames: 77` produces 78 images — index 0 is empty.
+`frames: 77` produces 78 images; index 0 is empty.
 
 ## frame-defined
 
 Every frame is its own PNG, stepped by a `listener:` like `progress`. List order
-runs 0.0 → 1.0. Use it when frames are not a simple slice — a bar that cracks
-apart, a gauge with distinct states.
+runs 0.0 → 1.0. Use it when frames are not a simple slice, such as a bar that
+cracks apart or a gauge with distinct states.
 
 Frames come from either `files:` or `sheet:`.
 
@@ -155,7 +155,7 @@ dimensions it found.
 
 ## Example
 
-From `Packs/default/images/default_images.yml` — a bar frame and the fills it
+From `Packs/default/images/default_images.yml`: a bar frame and the fills it
 swaps between:
 
 ```yaml
@@ -199,5 +199,5 @@ Which one shows, and how full, is decided in the [layout](/layouts/images).
 
 ## Duplicate ids
 
-The pack that loads later wins, with a warning. See
+The pack that loads later overrides it, with a warning. See
 [load order](/packs/#load-order).

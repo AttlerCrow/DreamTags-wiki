@@ -1,6 +1,8 @@
 # Built-in placeholders
 
-Always available. They read the entity the tag is on.
+These placeholders are always registered and always resolve. They read the
+entity the tag is on. Where a value comes from an optional plugin, the
+placeholder still resolves without it and returns the fallback listed below.
 
 ## Numbers
 
@@ -21,13 +23,15 @@ listener's `value:` or `max:`.
 | `{xp_level}` | Vanilla XP level, always |
 | `{xp_progress}` | Vanilla XP bar progress, 0.0 – 1.0 |
 
-Percentages run **0 to 1**. Half health is `0.5`, so
-`"{health_percentage} <= 50"` is always true — the most common mistake in a first
-layout.
+Percentages run **0 to 1**, not 0 to 100. Half health is `0.5`, so
+`"{health_percentage} <= 50"` is always true.
 
 Mana comes from MMOCore or AuraSkills per [`resources.source`](/config#resources),
 or from a plugin that registered its own provider. Without any of them it reads
-`0`, so a mana bar gated on `"{max_mana} > 0"` hides itself.
+`0`, so a mana bar gated on `"{max_mana} > 0"` is hidden.
+
+`{mob_level}` returns `0` and `{mob_id}` returns `<none>` when no mob provider
+supplies a value, for example with MythicMobs absent.
 
 ```yaml
 texts:
@@ -61,7 +65,7 @@ condition: "{entity_name} contains Boss"
 
 ## Booleans
 
-Used on their own in a condition, with no operator.
+Used in a condition with no operator.
 
 | Placeholder | Args | True when |
 | --- | --- | --- |
@@ -70,8 +74,8 @@ Used on their own in a condition, with no operator.
 | `{has_potion_effect:TYPE}` | 1 | The target has that effect |
 
 The effect name is case-insensitive, and an unknown one returns `false` rather
-than failing. The argument is mandatory — `{has_potion_effect}` on its own prints
-literally.
+than failing. The argument is mandatory: `{has_potion_effect}` without one is
+printed literally.
 
 ```yaml
 condition: "has_potion_effect:poison"
@@ -80,7 +84,7 @@ condition: "has_potion_effect:fire_resistance"
 
 ## Popup variables
 
-Only inside the [popup](/popups) or
+Available only inside the [popup](/popups) or
 [damage indicator](/damage-indicators) providing them.
 
 | Context | Variables |
@@ -93,12 +97,13 @@ Only inside the [popup](/popups) or
 
 ## Death animation
 
-Published by a tag with [`death.linger`](/tags#death-linger):
+Always published on a mob tag, and meaningful during
+[`death.linger`](/tags#death-linger):
 
 | Variable | Value |
 | --- | --- |
-| `{dying}` | `true` for the whole linger |
-| `{death_progress}` | `0` → `1` across it |
+| `{dying}` | `true` for the whole linger, `false` otherwise |
+| `{death_progress}` | `0` → `1` across it, `0` otherwise |
 
 ```yaml
 health_break:
@@ -112,7 +117,8 @@ health_break:
 
 ## What DreamTags exposes to other plugins
 
-Readable from any plugin that supports PlaceholderAPI — scoreboards, TAB, chat.
+Readable from any plugin that supports PlaceholderAPI, such as scoreboards, TAB
+and chat plugins.
 
 | Placeholder | Returns |
 | --- | --- |

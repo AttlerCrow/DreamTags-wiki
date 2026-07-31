@@ -1,7 +1,7 @@
 # Layout: images
 
-`images:` places an [image](/images) in the layout. Each key is a slot name —
-yours to choose, it only has to be unique within the layout.
+`images:` places an [image](/images) in the layout. Each key is a slot name. The
+name is arbitrary and only has to be unique within the layout.
 
 ```yaml
 images:
@@ -31,11 +31,11 @@ images:
 ## background and reference width
 
 One slot per layout should be the backdrop, marked `background: true`. It
-defines the **reference width** everything else aligns against — the frame of a
-health bar, typically.
+defines the **reference width** everything else aligns against, typically the
+frame of a health bar.
 
-`background` defaults to `true` for `layer: 0`, so a single-image layout works
-without saying anything. Once you use layers, mark it explicitly:
+`background` defaults to `true` for `layer: 0`, so a single-image layout needs no
+explicit setting. On any other layer, set it explicitly:
 
 ```yaml
 health_frame:
@@ -55,9 +55,9 @@ health_bar:
   listener: health
 ```
 
-Anything measurable works — see [Listeners](/layouts/listeners) for `health`,
-`absorption`, `mana`, arbitrary `placeholder` values, and the `trailing` wrapper
-that produces lagging damage bars.
+See [Listeners](/layouts/listeners) for `health`, `absorption`, `mana`,
+arbitrary `placeholder` values, and the `trailing` wrapper that produces lagging
+damage bars.
 
 ## Showing an image conditionally
 
@@ -68,19 +68,19 @@ poison_icon:
   condition: "has_potion_effect:poison"
 ```
 
-The classic use is swapping a bar's colour: several slots on the same layer with
-conditions that cannot both be true. See the
+A common use is swapping a bar's colour: several slots on the same layer with
+mutually exclusive conditions. See the
 [example in the layouts overview](/layouts/#a-complete-example).
 
-## merge, and when to reach for a stack
+## merge and stacks
 
 Images that overlap perfectly and share `x`, `y`, `scale` and `component` can be
 collapsed into one display, removing the perspective gap between layers. `merge`
-allows that.
+permits that.
 
-If you are deliberately overprinting pieces that must line up to the pixel — a
-fill inside its frame — prefer an explicit [stack](/layouts/stacks). It is
-clearer to read and guarantees one shared depth.
+For pieces that must line up to the pixel, such as a fill inside its frame, use
+an explicit [stack](/layouts/stacks) instead. A stack states the intent directly
+and puts every piece at one shared depth.
 
 ## Alignment
 

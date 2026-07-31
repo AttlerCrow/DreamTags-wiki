@@ -1,8 +1,8 @@
 # Layouts
 
-A layout is a design: images, bars, text and buff icons arranged into the thing
-that floats over an entity. `Packs/<pack>/layouts/*.yml`, one top-level key per
-layout id.
+A layout is a design: images, bars, text and buff icons arranged into the
+element that floats over an entity. `Packs/<pack>/layouts/*.yml`, one top-level
+key per layout id.
 
 ```yaml
 my_layout:
@@ -17,7 +17,7 @@ my_layout:
       layer: 10
 ```
 
-A layout does not decide *who* wears it — that is a [tag](/tags).
+A layout does not define *who* wears it. That is a [tag](/tags).
 
 ## Sections
 
@@ -33,8 +33,8 @@ All optional, and they load in this order:
 
 Two keys appear in almost every slot and have their own pages:
 
-- [`listener:`](/layouts/listeners) — what value fills a bar
-- [`condition:`](/layouts/conditions) — whether the slot draws at all
+- [`listener:`](/layouts/listeners): what value fills a bar
+- [`condition:`](/layouts/conditions): whether the slot draws at all
 
 ## Coordinates
 
@@ -42,20 +42,20 @@ Two keys appear in almost every slot and have their own pages:
   rejected at load with `must be a whole texture pixel`.
 - **y** is in pixels and **may be decimal**. Positive is up.
 - `scale` multiplies the slot's size.
-- `layer` decides draw order — higher numbers are in front.
+- `layer` sets draw order; higher numbers are in front.
 
 One texture pixel is 1/40 of a block, so `y: 12` is about a third of a block
 above the anchor.
 
 ## Layers and z-fighting
 
-Each layer gets a small depth offset so overlapping slots do not fight. That
-offset is real distance, though, so two textures of the same size on different
-layers project at very slightly different scales up close.
+Each layer gets a small depth offset so overlapping slots do not z-fight. That
+offset is real distance, so two textures of the same size on different layers
+project at very slightly different scales at close range.
 
-When you are overprinting pieces that must line up **exactly** — a bar fill on
-top of its frame — use a [stack](/layouts/stacks) instead. A stack puts every
-piece in one display at one depth, so there is no gap at all.
+For pieces that must line up **exactly**, such as a bar fill on top of its
+frame, use a [stack](/layouts/stacks) instead. A stack puts every piece in one
+display at one depth, which removes the offset entirely.
 
 ## A complete example
 
@@ -170,13 +170,14 @@ default_layout:
 ```
 
 - The three `health_fill_*` slots sit on layer 4 with mutually exclusive
-  conditions, so exactly one shows. That is how a bar changes colour.
+  conditions, so exactly one shows. This is the mechanism behind a bar that
+  changes colour.
 - `trail_damage` and `heal_incoming` read the same `health` value through
-  different [trailing listeners](/layouts/listeners#trailing) — one lags going
+  different [trailing listeners](/layouts/listeners#trailing): one lags going
   down, the other going up.
 - The level badge is hidden on non-RPG mobs by `{mob_level} > 0`.
 
 ## Duplicate ids
 
-Two packs declaring the same layout id: the later one wins, with a warning. A
-layout that fails to parse is skipped and the rest keep loading.
+When two packs declare the same layout id, the later one overrides it, with a
+warning. A layout that fails to parse is skipped and the rest keep loading.

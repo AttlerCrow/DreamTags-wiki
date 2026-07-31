@@ -3,18 +3,18 @@
 ## Tags are packets
 
 A tag is a text display sent as packets to the players who should see it. No
-entity is spawned and nothing is saved to the chunk, so `/kill @e` cannot touch
-it and no other plugin can clear it.
+entity is spawned and nothing is saved to the chunk, so `/kill @e` does not
+affect it and other plugins cannot clear it.
 
-Because packets are per-player, two players can be shown different things — that
-is how per-player damage numbers and hidden nametags work.
+Because packets are per-player, two players can be shown different things. This
+is what allows per-player damage numbers and hidden nametags.
 
 Tags follow their entity by riding it as a passenger. The client moves them every
 frame, so the server sends no position packets.
 
 ## Bars are images
 
-A bar is a PNG cut into frames, not a row of `■` characters.
+A bar is a PNG cut into frames rather than a row of `■` characters.
 
 ```
 default_healthbar_fill.png   77 x 6 px
@@ -22,7 +22,7 @@ default_healthbar_fill.png   77 x 6 px
 frame 0 (empty)  ...  frame 38 (half)  ...  frame 77 (full)
 ```
 
-Showing the right frame is all a health bar does.
+A health bar displays the frame matching the current value.
 
 ## The image says how it is cut, the layout says what fills it
 
@@ -49,14 +49,14 @@ mana_bar:
   listener: mana       # different value
 ```
 
-One exception: `type: frame-sequence` animates on a clock and ignores
+There is one exception: `type: frame-sequence` animates on a clock and ignores
 `listener:`.
 
 ## Ids are global
 
-Everything you define gets an id, and ids are shared across all packs. That is
-how a pack builds on another one — `soulmates_pack` defines its own images but
-uses `font: pixel` and `background: name_plate` from `default`.
+Everything you define gets an id, and ids are shared across all packs. This is
+what allows one pack to build on another: `soulmates_pack` defines its own
+images but uses `font: pixel` and `background: name_plate` from `default`.
 
 ```
 assets/*.png          textures
@@ -100,13 +100,13 @@ health_fill_low:
 
 ## Rendering cost
 
-A nametag's content depends on the entity wearing it, not on who is looking. When
-DreamTags can prove that at load time, it renders the tag once and sends the same
-packets to everyone.
+A nametag's content depends on the entity wearing it rather than on the viewer.
+When DreamTags can establish that at load time, it renders the tag once and
+sends the same packets to everyone.
 
 `%papi%` placeholders can read the viewer, so a layout using one is rendered
-separately for each viewer instead. Use a [built-in](/placeholders/built-in) when
-one exists. The startup log names any tag that ended up on the slower path.
+separately for each viewer instead. Use a [built-in](/placeholders/built-in)
+where one exists. The startup log names any tag on the per-viewer path.
 
 ## Next
 

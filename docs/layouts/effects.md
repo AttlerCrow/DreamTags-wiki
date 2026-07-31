@@ -1,7 +1,7 @@
 # Layout: effects
 
-`effects:` draws the target's active potion effects as a grid of icons that
-appears and disappears on its own.
+`effects:` draws the target's active potion effects as a grid of icons, which
+appears and disappears with the effects themselves.
 
 ```yaml
 effects:
@@ -13,8 +13,9 @@ effects:
     max-rows: 6
 ```
 
-Unlike every other section, you do not list the icons. You declare a grid and a
-naming convention, and DreamTags fills as many slots as the entity has effects.
+Unlike every other section, the icons are not listed individually. The
+configuration declares a grid and a naming convention, and DreamTags fills as
+many slots as the entity has effects.
 
 ## How icons are matched
 
@@ -23,10 +24,11 @@ entity under Speed looks for an image called `effect_speed`.
 
 The `default` pack ships all 41 vanilla icons already named that way
 (`effect_speed`, `effect_poison`, `effect_wither`, …), so the default
-`icon-prefix` just works. To restyle them, declare the same ids in a pack that
-[sorts later](/packs/#load-order-and-overriding).
+`icon-prefix` requires no change. To restyle them, declare the same ids in a
+pack that
+[sorts later](/packs/#load-order).
 
-An effect with no matching image is skipped — the grid closes up around it.
+An effect with no matching image is skipped and the grid closes up around it.
 
 ## Keys
 
@@ -58,22 +60,22 @@ Unlike images, stacks and texts, an effects grid cannot be placed in a
 
 ## The expiry fade
 
-`fade-start` and `fade-min-opacity` make an icon dim as it runs out, so players
-can see a buff is about to expire without reading a number.
+`fade-start` and `fade-min-opacity` dim an icon as it runs out, indicating that
+an effect is about to expire without showing a number.
 
 With the defaults, an icon is solid until 2 seconds remain, then fades toward
 22% opacity. Infinite effects never fade.
 
 ## tag-lift-per-row
 
-Rows stack **upward** from the first slot, which would push them into the name
+Rows stack **upward** from the first slot, which pushes them towards the name
 above. `tag-lift-per-row` raises the entire tag to make room:
 
 ```yaml
 tag-lift-per-row: 10    # the tag rises 10 px for each extra row of buffs
 ```
 
-With `0` the rows simply grow up into whatever is above them.
+With `0` the rows grow upward into whatever is above them.
 
 ## The shipped example
 
@@ -100,12 +102,10 @@ effects:
     fade-min-opacity: 48
 ```
 
-A 9-wide grid up to 6 rows: 54 slots, enough for any realistic number of
-effects. Icons at half size on plates at double that, starting 41 px to the left
-so the row is centred.
+A 9-wide grid of up to 6 rows gives 54 slots. Icons are at half size on plates
+at double that, starting 41 px to the left so the row is centred.
 
 ## Cost
 
-Slots are only drawn for effects that actually exist, so a large `max-rows`
-costs nothing when players have two buffs. Size the grid for your worst case
-without worrying about the common one.
+Slots are only drawn for effects that exist, so a large `max-rows` costs nothing
+when an entity has two effects. The grid can be sized for the maximum case.

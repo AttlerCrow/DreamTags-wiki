@@ -4,7 +4,7 @@ layout: home
 hero:
   name: DreamTags
   text: Nametags and health bars, drawn with packets
-  tagline: Layered bitmap bars, buff rows, damage indicators and rank plates — built from YAML, with no entities on the server.
+  tagline: Layered bitmap bars, buff rows, damage indicators and rank plates, built from YAML, with no entities on the server.
   actions:
     - theme: brand
       text: Get started
@@ -14,22 +14,22 @@ hero:
       link: /guide/how-it-works
 
 features:
-  - title: Nothing exists on the server
-    details: Tags are text displays sent as packets. Nothing is spawned, nothing is saved to a chunk, and /kill @e cannot touch them.
+  - title: No server-side entities
+    details: Tags are text displays sent as packets. Nothing is spawned, nothing is saved to a chunk, and /kill @e does not affect them.
   - title: Bars are images
-    details: A PNG cut into frames, not a row of characters. Point a slot at it, say what it follows, and it fills.
+    details: A PNG cut into frames rather than a row of characters. A slot points at the image and declares the value it follows.
   - title: Built from YAML
     details: Images, fonts and plates become layouts. Layouts become tags. Every id is reusable across packs.
-  - title: The pack builds itself
-    details: Drop a PNG in assets/, give it an id. Merges with CraftEngine, Nexo, ModelEngine and BetterModel.
+  - title: Generated resource pack
+    details: Add a PNG to assets/ and give it an id. Merges with CraftEngine, Nexo, ModelEngine and BetterModel.
 ---
 
 ## Where to start
 
-New install? Read [Getting started](/guide/getting-started) — a fresh install
-shows nothing until you define a tag.
+For a new install, read [Getting started](/guide/getting-started). A fresh
+install shows nothing until a tag is defined.
 
-Want the model first? [How it works](/guide/how-it-works).
+For the underlying model, read [How it works](/guide/how-it-works).
 
 | Section | Contents |
 | --- | --- |
@@ -39,7 +39,7 @@ Want the model first? [How it works](/guide/how-it-works).
 | [Layouts](/layouts/) | Images, text, buff grids and plates |
 | [Tags](/tags) | Which entities get which layout, and when |
 | [Damage indicators](/damage-indicators) | Combat numbers over the entity that was hit |
-| [Placeholders](/placeholders/) | Every value you can use |
+| [Placeholders](/placeholders/) | Every available value |
 
-Examples come from the `default` pack that ships with the plugin, so you can open
-the same file on your server.
+Examples come from the `default` pack that ships with the plugin, so the same
+file can be opened on your server.

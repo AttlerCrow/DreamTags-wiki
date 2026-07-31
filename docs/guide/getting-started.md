@@ -23,16 +23,16 @@ Optional plugins are detected at startup. Missing ones are skipped.
 This is deliberate. Three things are off:
 
 - **No tags are defined.** `Packs/default/tags/default_tags.yml` is all comments.
-  The `default` pack ships ingredients — fonts, bar fills, the name plate, potion
-  icons — for other packs to use.
+  The `default` pack ships components for other packs to use: fonts, bar fills,
+  the name plate and potion icons.
 - **Damage indicators are off** (`systems.damage-indicators: false`).
 - **Only the healing popup is active.**
 
 ## Show something
 
-`default` already ships a finished player design called `player_layout`: health
-bar with trailing damage, heal preview, buff row, XP level and the name on its
-plate. Nothing points at it yet.
+`default` ships a complete player design called `player_layout`: health bar with
+trailing damage, heal preview, buff row, XP level and the name on its plate. No
+tag points at it yet.
 
 Create `plugins/DreamTags/Packs/default/tags/my_tags.yml`:
 
@@ -56,8 +56,8 @@ my_mob_tag:
   layouts: [default_layout]
 ```
 
-The bar appears when the mob is hit or looked at, and stays for 3 seconds after.
-See [Tags](/tags) for every trigger and selector.
+The bar appears when the mob is hit or looked at, and stays for 3 seconds
+afterwards. See [Tags](/tags) for every trigger and selector.
 
 ## Damage numbers
 
@@ -68,17 +68,17 @@ systems:
   damage-indicators: true
 ```
 
-Reload, and the `damage` and `crit` indicators start firing. By default a player
-only sees numbers they dealt; they can widen that with
+After a reload the `damage` and `crit` indicators start firing. By default a
+player only sees numbers they dealt; this can be widened with
 `/dreamtags indicators <solo|party|global>`.
 
 ## Editing the defaults
 
-DreamTags never overwrites a file that already exists, so your edits survive
-restarts and updates. Delete a file and restart to get a fresh copy.
+DreamTags never overwrites a file that already exists, so edits survive restarts
+and updates. Delete a file and restart to get a fresh copy.
 
 ## Next
 
 - [How it works](/guide/how-it-works)
 - [config.yml](/config)
-- [Packs](/packs/) — how to keep your work out of `default`
+- [Packs](/packs/): how to keep your content out of `default`

@@ -4,8 +4,8 @@ A component is a named horizontal row with a height. Slots attached to it move
 together, and when a component is hidden it collapses to zero height and
 everything below **moves up**.
 
-Without components you position everything with absolute `y` values, which means
-hiding one bar leaves a hole.
+Without components, everything is positioned with absolute `y` values, so hiding
+one bar leaves a gap.
 
 ```yaml
 components:
@@ -40,21 +40,21 @@ Reference a component from any `images:`, `stacks:` or `texts:` entry:
 ```yaml
 images:
   energy_fill:
-    component: energy      # ← follows the energy row
+    component: energy      # follows the energy row
     image: soulmates_energy_fill
     layer: 3
 ```
 
-The slot's own `y` is then relative to its row, not to the entity.
+The slot's own `y` is then relative to its row rather than to the entity.
 
 An `effects:` grid cannot be attached to a component. Position it with `x` and
 `y`.
 
 ## The example that ships
 
-`soulmates_pack` is the one place in the default content that uses components,
-and it shows exactly what they are for — a pet tag with a health bar and an
-energy bar, where **the energy bar only exists for pets that have energy**:
+`soulmates_pack` is the only default content that uses components. It defines a
+pet tag with a health bar and an energy bar, where **the energy bar only exists
+for pets that have energy**:
 
 ```yaml
 soulmates_pet_layout:
@@ -117,11 +117,11 @@ soulmates_pet_layout:
       scale: 1
 ```
 
-A pet with no energy stat hides both energy slots and the name drops down to sit
-right above the health bar. One layout, no duplicate for the "no energy" case.
+For a pet with no energy stat, both energy slots are hidden and the name drops
+down to sit directly above the health bar. This uses one layout rather than a
+duplicate for the "no energy" case.
 
 ## When you do not need them
 
 For a fixed design where everything is always visible, plain `y` offsets are
-simpler and easier to follow. Reach for components when a section is
-**optional**.
+simpler. Components are only needed when a section is **optional**.

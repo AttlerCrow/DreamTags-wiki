@@ -10,12 +10,12 @@ health_bar:
 ```
 
 Listeners belong on [image slots](/layouts/images) and on
-[stack layers](/layouts/stacks). Text does not need one — it reads
+[stack layers](/layouts/stacks). Text does not need one; it reads
 [placeholders](/placeholders/) directly.
 
 ## Two ways to write it
 
-**Short form** — just the type. Extra options go on the slot itself:
+**Short form.** Only the type. Extra options go on the slot itself:
 
 ```yaml
 mana_bar:
@@ -25,7 +25,7 @@ mana_bar:
   max: "%mmocore_max_stamina%"
 ```
 
-**Section form** — options live inside, under `type:`:
+**Section form.** Options are nested under `type:`:
 
 ```yaml
 mana_bar:
@@ -51,9 +51,9 @@ listener: health
 
 ### absorption
 
-Absorption hearts. The maximum is the entity's **max health**, not a separate
-absorption cap — so a full absorption bar is proportional to the health bar
-beside it.
+Absorption hearts. The maximum is the entity's **max health** rather than a
+separate absorption cap, so a full absorption bar is proportional to the health
+bar beside it.
 
 ```yaml
 listener: absorption
@@ -85,13 +85,13 @@ listener:
   max: "{max_mana}"
 ```
 
-Braces are optional in `value` and `max` — `health` and `{health}` are both
+Braces are optional in `value` and `max`; `health` and `{health}` are both
 accepted.
 
 ### trailing
 
-Wraps **another** listener and chases it smoothly. This is the lagging damage
-bar, and mirrored, the heal preview.
+Wraps **another** listener and follows it smoothly. This produces the lagging
+damage bar and, in the opposite direction, the heal preview.
 
 | Key | Required | Default | What it does |
 | --- | --- | --- | --- |
@@ -111,12 +111,12 @@ health_trail_damage:
 ```
 
 **How `on` works.** With `on: decrease` the bar snaps up instantly when health
-rises, but lags on the way down — the ghost bar left behind by a hit. With
-`on: increase` it does the opposite: it drops instantly with damage and eases
-upward when healing, which reads as a heal preview.
+rises but lags on the way down, producing the ghost bar left behind by a hit.
+With `on: increase` it does the opposite: it drops instantly with damage and
+eases upward when healing, which produces a heal preview.
 
-Every change re-arms `delay`, so a burst of hits holds the trail until the combo
-ends and then drains once.
+Every change re-arms `delay`, so a burst of hits holds the trail until the
+sequence ends and then drains once.
 
 If `of: placeholder`, put `value:` and `max:` in the same section as the
 trailing options:
@@ -132,8 +132,7 @@ listener:
 
 ## Putting it together
 
-The shipped health bar uses three listeners on one value to get its whole
-behaviour:
+The shipped health bar uses three listeners on one value:
 
 ```yaml
 health_trail_damage:      # red ghost, lags on the way down
@@ -153,13 +152,13 @@ health_fill_normal:       # the bar itself: instant on damage, eased on heal
   listener: { type: trailing, of: health, on: increase, delay: 2, time: 10 }
 ```
 
-Take a hit and the red trail is briefly visible behind the bar. Get healed and
-the green preview jumps ahead while the bar eases up to meet it.
+On damage the red trail is briefly visible behind the bar. On healing the green
+preview jumps ahead while the bar eases up to meet it.
 
 ## Animations ignore listeners
 
-An image with `type: frame-sequence` plays on time. Putting a listener on it
-does nothing and logs a warning — gate it with
+An image with `type: frame-sequence` plays on a clock. A listener on it has no
+effect and logs a warning. Gate it with
 [`condition:`](/layouts/conditions) instead.
 
 ## Unknown types
