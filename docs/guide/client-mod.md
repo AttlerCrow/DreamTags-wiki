@@ -15,8 +15,13 @@ tags, and nothing changes for them.
   soft bump and a green glow.
 - A new effect on a mob announces itself with a popup: red for harmful, blue
   for beneficial.
+- Effects that plugins run themselves (a bleed) show among the vanilla ones,
+  with icons a resource pack can replace; see
+  [custom effects](/placeholders/hooks#custom-effects).
 - Critical, magic, true, hybrid and damage-over-time numbers each have their
   own look; a status tick uses its status's colour.
+- The vanilla name above a player (or a mob whose tag is up) is hidden, since
+  the tag already shows it.
 - A key (unbound by default, under *DreamTags* in Controls) hides every tag.
 
 The mod draws only through the game's own render pipeline, so it runs on the
