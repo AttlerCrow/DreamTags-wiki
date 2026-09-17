@@ -179,3 +179,40 @@ never the viewer, which keeps layouts using it on the shared render. A
 placeholder registered without that declaration is assumed to depend on the
 viewer. That assumption is correct in all cases but renders per viewer, which
 costs more.
+
+### Mana and level
+
+A plugin that keeps its own mana or levels registers a provider, and every tag
+reads it: `{mana}`, `{max_mana}`, `{mob_level}`, `{player_level}` and the
+client mod's mana bar and level badge. Providers are asked before the bundled
+hooks, first one that owns the entity wins. They are read from DreamTags'
+async render pass, so answer from memory only.
+
+```java
+ResourceManager resources = DreamTags.inst().resourceManager();
+Registration mana = resources.registerManaProvider(entity ->
+        entity instanceof Player p ? new ManaResource(myMana(p), myMaxMana(p)) : null);
+Registration level = resources.registerLevelProvider(entity ->
+        entity instanceof Player p ? OptionalInt.of(myLevel(p)) : OptionalInt.empty());
+// close both when your plugin disables
+```
+
+A mob provider can say a mob already shows its health its own way - a boss
+bar - by overriding `TagMob#hasOwnHealthDisplay()`. That mob then gets no
+health bar; its damage numbers still show.
+
+### Hit kinds
+
+A trigger can say what kind of hit it reports, whichever trigger id it uses:
+
+```java
+PopupTriggerInfo.builder(target)
+        .amount(damage)
+        .kind(HitKind.MAGIC)      // damage, critical, magic, true, hybrid, dot, heal, buff
+        .color(0x6BBF3A)          // optional: the number's colour, e.g. a poison tick
+        .build();
+```
+
+The kind is readable in layouts as `{hit_kind}`, and the
+[client mod](/guide/client-mod) styles numbers by it. Kinds are open strings:
+one DreamTags does not know is shown with its rendered text.
