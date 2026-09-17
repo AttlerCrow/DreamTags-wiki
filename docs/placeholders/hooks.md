@@ -201,6 +201,35 @@ A mob provider can say a mob already shows its health its own way - a boss
 bar - by overriding `TagMob#hasOwnHealthDisplay()`. That mob then gets no
 health bar; its damage numbers still show.
 
+### Custom effects
+
+A plugin that runs its own statuses - a bleed, a burn - registers an effect
+provider, and tags show them next to the vanilla potion effects. Every
+provider is asked and their effects are shown together. Like the others it is
+read from the async render pass.
+
+```java
+Registration effects = resources.registerEffectProvider(entity ->
+        isBleeding(entity)
+                ? List.of(new TagEffect("myplugin:bleed", 0, ticksLeft(entity), true))
+                : List.of());
+```
+
+`TagEffect(key, amplifier, durationTicks, harmful)`: `durationTicks` is `-1`
+for an effect with no end, and `harmful` picks the red or blue plate.
+
+The icon is found by the key:
+
+- **Packet tags**: the effect grid shows the image `<icon-prefix><path>` -
+  `effect_bleed` for `myplugin:bleed`. The default pack ships `effect_bleed`
+  and `effect_burn`; add an image with that id for any other key.
+- **[Client mod](/guide/client-mod)**: the texture
+  `<namespace>:textures/mob_effect/<path>.png` from the resource pack, so a
+  server pack can add its own. Without one, the mod's built-in icon of that
+  name (`bleed`, `burn`), and failing that a question mark. The name shown on
+  the effect's popup is the translation `effect.<namespace>.<path>`, or the
+  path.
+
 ### Hit kinds
 
 A trigger can say what kind of hit it reports, whichever trigger id it uses:

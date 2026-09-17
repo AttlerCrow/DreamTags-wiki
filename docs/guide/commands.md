@@ -12,8 +12,26 @@ All subcommands of `/dreamtags`.
 | `/dreamtags scope <scope>` | `dreamtags.scope` | Who can see your nametag |
 | `/dreamtags indicators` | `dreamtags.indicators` | Your damage-number audience and the options |
 | `/dreamtags indicators <scope>` | `dreamtags.indicators` | Changes it |
+| `/dreamtags self` | `dreamtags.toggle` | Where you see your own tag: behind and front (F5) |
+| `/dreamtags self <behind\|front\|all> <on\|off>` | `dreamtags.toggle` | Shows or hides your own tag in that view |
 
-`hide`, `scope`, `indicators` and the test commands are player-only.
+`hide`, `self`, `scope`, `indicators` and the test commands are player-only.
+
+### Your own tag
+
+F5 has two third-person views, the camera behind you and in front of you.
+`/dreamtags self` turns your own tag on or off in each one; until you choose,
+`nametags.show-self` decides. Only the [client mod](/guide/client-mod) knows
+which view is on screen, so it is the one that applies them separately.
+Without the mod your own tag shows while either view is on. The choice is
+stored on the player. Plugins read and change it through
+`ScopeManager#selfTag`, which is what a settings menu calls:
+
+```java
+ScopeManager scopes = DreamTags.inst().scopeManager();
+boolean behind = scopes.selfTag(player.getUniqueId(), SelfTagView.BEHIND);
+scopes.selfTag(player.getUniqueId(), SelfTagView.BEHIND, !behind); // applies at once
+```
 
 ### hide vs scope
 
