@@ -34,7 +34,8 @@ export default defineConfig({
         items: [
           { text: 'Getting started', link: '/guide/getting-started' },
           { text: 'How it works', link: '/guide/how-it-works' },
-          { text: 'Commands & permissions', link: '/guide/commands' }
+          { text: 'Commands & permissions', link: '/guide/commands' },
+          { text: 'Client mod', link: '/guide/client-mod' }
         ]
       },
       {
