@@ -94,9 +94,6 @@ nearby player** sees the bar appear, including players who did not attack it.
 Every tag is mounted on its entity as a passenger, so the client moves it every
 frame and the server sends no position packets.
 
-`attach` and `motion` no longer exist. A tag that still has them loads anyway;
-the console names the key that is being ignored.
-
 ### death.linger
 
 When an entity dies in one hit the tag normally disappears mid-animation, so a
