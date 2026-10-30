@@ -1,6 +1,7 @@
 # Client mod
 
-DreamTags ships an optional Fabric mod for **Minecraft 26.2**. A player who
+DreamTags ships an optional Fabric mod for **Minecraft 26.2 and 26.3**, one
+jar per version. A player who
 installs it gets tags drawn by their own client; everyone else keeps the packet
 tags, and nothing changes for them.
 
@@ -42,7 +43,7 @@ the packet path.
 ## Building
 
 ```bash
-./gradlew dreamTagsFabricJar   # -> platform/fabric/build/libs/
+./gradlew dreamTagsFabricJar   # -> platform/fabric/versions/<version>/build/libs/
 ```
 
 The server and the mod speak one protocol version, carried in the channel
