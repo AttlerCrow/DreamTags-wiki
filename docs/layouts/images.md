@@ -26,6 +26,7 @@ images:
 | `align` / `anchor` | `left` · `center` · `right` | `center` | Which edge of the image sits at `x` |
 | `condition` | see [Conditions](/layouts/conditions) | — | Whether it draws |
 | `listener` | see [Listeners](/layouts/listeners) | — | What fills it, for `progress` and `frame-defined` images |
+| `smooth` | boolean | `false` | The bar slides instead of jumping. See [Smooth bars](#smooth-bars) |
 | `component` | string | — | Attach to a [component](/layouts/components) row |
 
 ## background and reference width
@@ -58,6 +59,43 @@ health_bar:
 See [Listeners](/layouts/listeners) for `health`, `absorption`, `mana`,
 arbitrary `placeholder` values, and the `trailing` wrapper that produces lagging
 damage bars.
+
+## Smooth bars
+
+By default a bar jumps to its new value. With `smooth: true` it **slides** there
+instead:
+
+```yaml
+health_bar:
+  image: health_fill
+  layer: 4
+  listener: health
+  smooth: true
+```
+
+It works with every listener, `trailing` included: a lagging damage bar then
+drains in one continuous motion instead of in small steps.
+
+The bar needs to be:
+
+- a `type: progress` image with `anchor: left` or `anchor: right`
+- the same from left to right: a flat colour, or a gradient that only changes
+  from top to bottom
+
+That is how the bar can be stretched without changing a single pixel. Detail on
+the bar itself, such as a highlight or rounded ends, belongs in the frame drawn
+on top of it.
+
+If a bar can't slide, the console says why and that slot keeps working as
+before. `smooth` is also ignored on a [stack](/layouts/stacks) layer.
+
+::: tip
+A smooth slot always gets its own display, even with `merge: true`.
+:::
+
+A smooth bar only ever shows its full width, so if **every** slot using an
+image is smooth, only that one frame goes into the resource pack. `frames:`
+then makes no difference, and the pack stays small.
 
 ## Showing an image conditionally
 

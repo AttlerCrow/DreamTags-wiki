@@ -53,21 +53,6 @@ ignored-entities:
 These never get a tag, regardless of the tag definitions. The display types are
 listed so that tags do not label other tags.
 
-## tags
-
-```yaml
-tags:
-  default-attach: passenger
-```
-
-| Value | Behaviour |
-| --- | --- |
-| `passenger` | Mounted on the entity. The client moves it every frame; the server sends no position packets |
-| `follow` | Teleported every pass: one packet per tag, per viewer, per pass |
-
-Use `follow` only when a tag must sit somewhere the mount point cannot reach. A
-`motion:` equation selects it automatically.
-
 ## nametags
 
 ```yaml

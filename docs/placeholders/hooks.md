@@ -21,8 +21,8 @@ returns when the plugin is absent.
 | **MMOCore** | Mana, `{player_level}` as class level, the `party` scope |
 | **AuraSkills** | Mana |
 | **MythicLib** | The `mythiclib_damage` and `mythiclib_crit_damage` triggers |
-| **ModelEngine** | Tag height from the model's tallest bone |
-| **BetterModel** | Height, plus anchoring to a tagged bone that follows animations |
+| **ModelEngine** | Tag height from a `dreamtags` bone, or the model's hitbox |
+| **BetterModel** | Tag height from the model, plus a tagged bone for popups |
 | **LuckPerms** | `ranks:` on nametags, and `rank-decoration` icons |
 | **PlaceholderAPI** | `%papi%` in any text, plus `%dreamtags_*%` for other plugins |
 | **CraftEngine** / **Nexo** | Hands them the generated resource pack |
@@ -87,22 +87,25 @@ triggers: [damage, crit, mythiclib_damage, mythiclib_crit_damage]
 
 ## ModelEngine and BetterModel
 
-Both position the tag above a custom model rather than above the vanilla hitbox,
-which would otherwise leave tags inside large models.
+Both put the tag above a custom model rather than above the vanilla hitbox,
+which would otherwise leave tags inside large models. The tag still rides the
+entity; only its height comes from the model.
 
-ModelEngine computes height from the blueprint's tallest bone. BetterModel also
-computes height, and in addition anchors the tag to a bone named `TAG`,
-`MOB_TAG` or `PLAYER_TAG`, falling back to the top of the `hitbox` bone. That
-anchor follows animations.
+### Placing the tag on a ModelEngine model
 
-Neither requires configuration or placeholders. Both apply to
-`anchor: model-top` only.
+Add an empty bone named **`dreamtags`** to the model in Blockbench and put its
+pivot where the tag should sit. The tag follows the model's scale, and any
+animation on that bone; parent it to the root for a tag that stays still.
 
-With both installed, BetterModel's bone anchor is resolved first and is used
-whenever it binds, which is the case for any entity BetterModel tracks.
-ModelEngine's height resolver is consulted only for entities BetterModel does
-not track; within that height fallback, ModelEngine is tried before
-BetterModel's own height resolver.
+Without that bone, the tag sits on top of the model's hitbox.
+
+### BetterModel
+
+The tag height comes from the model itself. Popups with `anchor: model-top`
+also follow a bone named `TAG`, `MOB_TAG` or `PLAYER_TAG`, falling back to the
+top of the `hitbox` bone.
+
+Neither needs configuration. With both installed, ModelEngine is asked first.
 
 ## LuckPerms
 

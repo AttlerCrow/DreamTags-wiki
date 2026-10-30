@@ -66,9 +66,8 @@ one loaded later takes precedence.
 | `offset` | blocks | `0.4` | Height above the anchor |
 | `scale` | number | `1.0` | Overall scale |
 | `x` / `y` | number | `0` | Offset of the whole tag |
-| `attach` | `passenger` · `follow` | [`tags.default-attach`](/config#tags) | How it rides |
-| `motion` | `x`/`y`/`z` equations | — | Movement |
 | `death.linger` | ticks ≥ 0 | `0` | How long it survives the mob's death |
+| `bounce` | boolean | `false` | The tag pops in, squashes when hit and hops when healed. See [Bounce](#bounce) |
 | `layouts` | list | — required | What to draw |
 
 ### Triggers
@@ -90,13 +89,13 @@ Plugins can add their own, like `soulmates:combat` in the example pack.
 The damage packet is broadcast to everyone tracking the entity, so **every
 nearby player** sees the bar appear, including players who did not attack it.
 
-### attach
+### How a tag rides
 
-`passenger` mounts the tag on the entity, so the client moves it and the server
-sends no position packets. `follow` teleports it every pass. `passenger` is the
-default and is considerably cheaper.
+Every tag is mounted on its entity as a passenger, so the client moves it every
+frame and the server sends no position packets.
 
-A non-zero `motion:` switches to `follow` automatically.
+`attach` and `motion` no longer exist. A tag that still has them loads anyway;
+the console names the key that is being ignored.
 
 ### death.linger
 
@@ -112,9 +111,8 @@ my_mob_tag:
   layouts: [default_layout]
 ```
 
-The tag switches to `follow` automatically when linger is set, because a mounted
-display is a passenger and the client drops it as soon as the mob despawns. The
-tag finishes where the mob died.
+When the mob despawns, the tag is moved once to where it died and finishes the
+animation there.
 
 Two variables are always published, and take these values during the linger:
 
@@ -152,8 +150,7 @@ images:
 | `x` / `y` | number | `0` | Offset |
 | `layouts` | list | — required | What to draw |
 
-Nametags do not accept `show-on`, `keep-for`, `attach`, `motion` or
-`death.linger`. They are visible within
+Nametags do not accept `show-on`, `keep-for`, `bounce` or `death.linger`. They are visible within
 [`view-distance × 2`](/config#timing-and-range).
 
 ### Which one a player gets
@@ -209,3 +206,22 @@ soulmates_pet_tag:
   scale: 1.0
   layouts: [soulmates_pet_layout]
 ```
+
+## Bounce
+
+`bounce: true` gives the whole tag a bit of life:
+
+- it **pops in** with a small overshoot when it appears
+- it **squashes and springs back** when the mob is hit, harder for a bigger hit
+- it **hops up** when the mob is healed
+
+```yaml
+my_mob_tag:
+  for: mobs
+  bounce: true
+  layouts: [default_layout]
+```
+
+It pairs well with [smooth bars](/layouts/images#smooth-bars). The tag only
+sends anything while it is moving; a mob that isn't being hit costs nothing
+extra.
