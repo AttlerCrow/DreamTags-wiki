@@ -21,7 +21,7 @@ returns when the plugin is absent.
 | **MMOCore** | Mana, `{player_level}` as class level, the `party` scope |
 | **AuraSkills** | Mana |
 | **MythicLib** | The `mythiclib_damage` and `mythiclib_crit_damage` triggers |
-| **ModelEngine** | Tag height from a `dreamtags` bone, or the model's hitbox |
+| **ModelEngine** | Tag height from a `dreamtags` bone, or the model itself |
 | **BetterModel** | Tag height from the model, plus a tagged bone for popups |
 | **LuckPerms** | `ranks:` on nametags, and `rank-decoration` icons |
 | **PlaceholderAPI** | `%papi%` in any text, plus `%dreamtags_*%` for other plugins |
@@ -97,7 +97,8 @@ Add an empty bone named **`dreamtags`** to the model in Blockbench and put its
 pivot where the tag should sit. The tag follows the model's scale, and any
 animation on that bone; parent it to the root for a tag that stays still.
 
-Without that bone, the tag sits on top of the model's hitbox.
+Without that bone, the tag sits on whichever is taller: the model's hitbox or
+its highest bone.
 
 ### BetterModel
 

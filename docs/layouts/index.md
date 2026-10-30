@@ -28,6 +28,7 @@ All optional, and they load in this order:
 | `components:` | Named vertical rows that collapse when empty | [Components](/layouts/components) |
 | `images:` | Image slots: frames, bars, icons | [Images](/layouts/images) |
 | `stacks:` | Several images overprinted into one display | [Stacks](/layouts/stacks) |
+| `dividers:` | Marks across a bar, one every so much health | [Dividers](/layouts/dividers) |
 | `effects:` | The active potion effect grid | [Effects](/layouts/effects) |
 | `texts:` | Text, with optional plate, font and rank icon | [Texts](/layouts/texts) |
 

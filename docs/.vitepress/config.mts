@@ -57,6 +57,7 @@ export default defineConfig({
               { text: 'Images', link: '/layouts/images' },
               { text: 'Texts', link: '/layouts/texts' },
               { text: 'Stacks', link: '/layouts/stacks' },
+              { text: 'Dividers', link: '/layouts/dividers' },
               { text: 'Effects', link: '/layouts/effects' },
               { text: 'Components', link: '/layouts/components' },
               { text: 'Listeners', link: '/layouts/listeners' },
